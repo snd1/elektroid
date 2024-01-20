@@ -7,7 +7,7 @@
  <name>Elektroid</name>
  <summary>Sample and MIDI device manager</summary>
  <description>
-  <p>Elektroid is a sample and MIDI device manager.</p>
+  <p>Elektroid is a sample and MIDI device manager for Elektron devices and some other samplers and synths.</p>
   <p>With Elektroid you can easily upload and download audio files and manage different types of data on different MIDI devices, such as presets, projects or tunings.</p>
   <p>It can also be used to send and receive SysEx MIDI files.</p>
  </description>
