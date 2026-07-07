@@ -271,7 +271,7 @@ file_load (const char *path, struct idata *idata,
 	   struct task_control *control)
 {
   FILE *f;
-  size_t size;
+  gsize size;
   gint res;
   GByteArray *array;
 
@@ -320,7 +320,7 @@ gint
 file_save_data (const gchar *path, const guint8 *data, gssize len)
 {
   gint res;
-  size_t bytes;
+  gsize bytes;
   FILE *file;
 
   file = fopen (path, "wb");

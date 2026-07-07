@@ -84,7 +84,7 @@ sds_get_sample_name (struct backend *backend, gint index)
   rx_msg = backend_tx_and_rx_sysex (backend, tx_msg, SDS_NO_SPEC_TIMEOUT);
   if (rx_msg)
     {
-      size_t n = rx_msg->data[9];
+      gsize n = rx_msg->data[9];
       name = g_malloc (sizeof (gchar) * (SDS_SAMPLE_NAME_MAX_LEN + 1));
       memcpy (name, (gchar *) & rx_msg->data[10], n);
       memset (name + n, 0, SDS_SAMPLE_NAME_MAX_LEN + 1 - n);
@@ -682,7 +682,7 @@ sds_get_rename_sample_msg (guint id, const gchar *name)
 {
   GByteArray *tx_msg;
   gchar *sanitized = common_get_sanitized_name (name, NULL, 0);
-  size_t len = strlen (sanitized);
+  gsize len = strlen (sanitized);
   guint8 total;
 
   len = len > SDS_SAMPLE_NAME_MAX_LEN ? SDS_SAMPLE_NAME_MAX_LEN : len;

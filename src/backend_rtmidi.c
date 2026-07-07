@@ -200,7 +200,7 @@ backend_rx_drain_int (struct backend *backend)
   guint8 tmp[RTMIDI_TMP_BUFF_SIZE];
   while (1)
     {
-      size_t size = RTMIDI_TMP_BUFF_SIZE;
+      gsize size = RTMIDI_TMP_BUFF_SIZE;
       //The size is not important here. As long as there are no more data.
       rtmidi_in_get_message (backend->inputp, tmp, &size);
       if (size == 0)
@@ -216,7 +216,7 @@ backend_rx_drain_int (struct backend *backend)
 gssize
 backend_rx_raw (struct backend *backend, guint8 *buffer, guint s)
 {
-  size_t size = s;
+  gsize size = s;
   rtmidi_in_get_message (backend->inputp, buffer, &size);
   if (!backend->inputp->ok)
     {

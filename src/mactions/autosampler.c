@@ -336,7 +336,7 @@ static void
 name_changed (GtkWidget *object, gpointer data)
 {
   GtkEntryBuffer *buf = gtk_entry_get_buffer (GTK_ENTRY (name_entry));
-  size_t len = strlen (gtk_entry_buffer_get_text (buf));
+  gsize len = strlen (gtk_entry_buffer_get_text (buf));
   gtk_widget_set_sensitive (start_button, len > 0);
 }
 

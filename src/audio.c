@@ -102,7 +102,7 @@ audio_is_stopped ()
 void
 audio_write_to_output (void *buffer, gint frames)
 {
-  size_t size;
+  gsize size;
   guint8 *dst, *src, *data;
   guint bytes_per_frame;
   gboolean end, stopping = FALSE;

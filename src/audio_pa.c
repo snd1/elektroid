@@ -46,10 +46,10 @@ audio_wait_success (pa_operation *operation)
 }
 
 static void
-audio_read_callback (pa_stream *stream, size_t size, void *data)
+audio_read_callback (pa_stream *stream, gsize size, void *data)
 {
   const void *buffer;
-  size_t frame_size;
+  gsize frame_size;
 
   if (pa_stream_peek (stream, &buffer, &size) < 0)
     {
@@ -64,10 +64,10 @@ audio_read_callback (pa_stream *stream, size_t size, void *data)
 }
 
 static void
-audio_write_callback (pa_stream *stream, size_t size, void *data)
+audio_write_callback (pa_stream *stream, gsize size, void *data)
 {
   void *buffer;
-  size_t frame_size;
+  gsize frame_size;
 
   frame_size = FRAME_SIZE (AUDIO_CHANNELS, sample_get_internal_format ());
 
