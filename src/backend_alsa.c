@@ -139,10 +139,10 @@ cleanup:
   return err;
 }
 
-ssize_t
+gssize
 backend_tx_raw (struct backend *backend, guint8 *data, guint len)
 {
-  ssize_t tx_len;
+  gssize tx_len;
 
   if (!backend->outputp)
     {
@@ -166,7 +166,7 @@ backend_tx_sysex_int (struct backend *backend,
 		      struct sysex_transfer *transfer,
 		      struct controllable *controllable)
 {
-  ssize_t tx_len;
+  gssize tx_len;
   guint total;
   guint len;
   guchar *b;
@@ -221,11 +221,11 @@ backend_rx_drain_int (struct backend *backend)
   snd_rawmidi_drain (backend->inputp);
 }
 
-ssize_t
+gssize
 backend_rx_raw (struct backend *backend, guint8 *buffer, guint len)
 {
   gint err;
-  ssize_t rx_len;
+  gssize rx_len;
   unsigned short revents;
 
   debug_print (6, "Polling...");

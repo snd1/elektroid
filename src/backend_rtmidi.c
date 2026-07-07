@@ -178,7 +178,7 @@ backend_tx_sysex_int (struct backend *backend,
   return transfer->err;
 }
 
-ssize_t
+gssize
 backend_tx_raw (struct backend *backend, guint8 *data, guint len)
 {
   GByteArray *msg;
@@ -213,7 +213,7 @@ backend_rx_drain_int (struct backend *backend)
 // rtmidi_in_get_message requires enough space in the buffer to store the message.
 // As this is unknown, quite a large buffer needs to be allocated for this.
 
-ssize_t
+gssize
 backend_rx_raw (struct backend *backend, guint8 *buffer, guint s)
 {
   size_t size = s;

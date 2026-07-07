@@ -904,7 +904,7 @@ elektron_tx_and_rx_timeout (struct backend *backend,
 			    GByteArray *tx_msg, gint timeout,
 			    struct controllable *controllable)
 {
-  ssize_t len;
+  gssize len;
   guint16 seq;
   GByteArray *rx_msg;
   guint msg_type = tx_msg->data[4] | 0x80;

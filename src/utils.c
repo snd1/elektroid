@@ -317,7 +317,7 @@ end:
 }
 
 gint
-file_save_data (const gchar *path, const guint8 *data, ssize_t len)
+file_save_data (const gchar *path, const guint8 *data, gssize len)
 {
   gint res;
   size_t bytes;

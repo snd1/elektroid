@@ -259,7 +259,7 @@ cli_list (int argc, gchar *argv[], int *optind)
 }
 
 static gint
-cli_command_path (int argc, gchar *argv[], int *optind, ssize_t member_offset)
+cli_command_path (int argc, gchar *argv[], int *optind, gssize member_offset)
 {
   const gchar *path;
   const gchar *device_path;
@@ -292,7 +292,7 @@ cli_command_path (int argc, gchar *argv[], int *optind, ssize_t member_offset)
 
 static gint
 cli_command_src_dst (int argc, gchar *argv[], int *optind,
-		     ssize_t member_offset)
+		     gssize member_offset)
 {
   const gchar *src_path, *dst_path;
   gchar *device_src_path, *device_dst_path;
