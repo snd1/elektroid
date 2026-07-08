@@ -428,7 +428,7 @@ system_load_mono_8k_16b (struct backend *backend, const gchar *path,
 gboolean
 system_file_exists (struct backend *backend, const gchar *path)
 {
-  return access (path, F_OK) == 0;
+  return g_file_test (path, G_FILE_TEST_EXISTS);
 }
 
 enum system_fs
