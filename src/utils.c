@@ -435,7 +435,7 @@ filename_matches_exts (const gchar *name, const gchar **exts)
 
   while (*e)
     {
-      if (!strcasecmp (ext, *e))
+      if (!g_ascii_strcasecmp (ext, *e))
 	{
 	  return TRUE;
 	}
