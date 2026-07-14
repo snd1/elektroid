@@ -219,7 +219,7 @@ autosampler_runner (gpointer user_data)
 	  break;
 	}
 
-      sleep (1);
+      usleep (1000000);
     }
 
   sfz_filename = g_strdup_printf ("%s.sfz", data->name);
