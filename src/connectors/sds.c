@@ -457,9 +457,9 @@ sds_download_try (struct backend *backend, const gchar *path,
 	      rx_packets++;
 
 	      //We cancel the upload.
-	      usleep (sds_data->rest_time);
+	      g_usleep (sds_data->rest_time);
 	      sds_tx_handshake (backend, SDS_CANCEL, packet % 0x80);
-	      usleep (sds_data->rest_time);
+	      g_usleep (sds_data->rest_time);
 
 	      err = 0;
 	      goto end;
@@ -525,7 +525,7 @@ sds_download_try (struct backend *backend, const gchar *path,
 	  free_msg (rx_msg);
 	}
       last_packet_ack = FALSE;
-      usleep (sds_data->rest_time);
+      g_usleep (sds_data->rest_time);
       retries++;
       continue;
     }
@@ -554,7 +554,7 @@ end:
       g_byte_array_free (output, TRUE);
     }
 
-  usleep (sds_data->rest_time);
+  g_usleep (sds_data->rest_time);
 
   return err;
 }
@@ -793,7 +793,7 @@ sds_upload (struct backend *backend, const gchar *path, struct idata *sample,
     {
       if (retries)
 	{
-	  usleep (sds_data->rest_time);
+	  g_usleep (sds_data->rest_time);
 	}
 
       if (retries == SDS_MAX_RETRIES)
@@ -809,7 +809,7 @@ sds_upload (struct backend *backend, const gchar *path, struct idata *sample,
       if (open_loop)
 	{
 	  err = backend_tx (backend, tx_msg);
-	  usleep (SDS_NO_SPEC_OPEN_LOOP_REST_TIME);
+	  g_usleep (SDS_NO_SPEC_OPEN_LOOP_REST_TIME);
 	}
       else
 	{
@@ -866,7 +866,7 @@ sds_upload (struct backend *backend, const gchar *path, struct idata *sample,
       retries = 0;
       err = 0;
 
-      usleep (sds_data->rest_time);
+      g_usleep (sds_data->rest_time);
     }
 
   if (active && sds_data->name_extension)
@@ -1269,9 +1269,9 @@ sds_handshake_esi_2000 (struct backend *backend)
     }
 
   //We cancel the upload.
-  usleep (SDS_REST_TIME_DEFAULT);
+  g_usleep (SDS_REST_TIME_DEFAULT);
   sds_tx_handshake (backend, SDS_CANCEL, 0);
-  usleep (SDS_REST_TIME_DEFAULT);
+  g_usleep (SDS_REST_TIME_DEFAULT);
 
   return 0;
 }
@@ -1284,9 +1284,9 @@ sds_handshake (struct backend *backend)
   struct sds_data *sds_data;
 
   //We cancel anything that might be running.
-  usleep (SDS_REST_TIME_DEFAULT);
+  g_usleep (SDS_REST_TIME_DEFAULT);
   sds_tx_handshake (backend, SDS_CANCEL, 0);
-  usleep (SDS_REST_TIME_DEFAULT);
+  g_usleep (SDS_REST_TIME_DEFAULT);
 
   err = sds_handshake_elektron (backend);
   if (err)

@@ -2576,7 +2576,7 @@ browser_search_changed (GtkSearchEntry *entry, gpointer data)
   browser_wait (browser);
   browser_clear (browser);
 
-  usleep (250000);
+  g_usleep (250000);
 
   gchar *tempo_prefix = g_utf8_casefold (_("Tempo"), -1);
   gchar *note_prefix = g_utf8_casefold (_("Note"), -1);

@@ -95,7 +95,7 @@ volca_sample_send_syro (struct idata *syro, struct task_control *control)
 
   audio_set_play_and_wait (&sample, control);
 
-  usleep (VOLCA_SAMPLE_SLEEP_US);
+  g_usleep (VOLCA_SAMPLE_SLEEP_US);
 
   if (control)
     {

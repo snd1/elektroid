@@ -1313,6 +1313,6 @@ end:
   regconn_unregister ();
   regpref_unregister ();
 
-  usleep (BE_REST_TIME_US * 2);
+  g_usleep (BE_REST_TIME_US * 2);
   return err ? EXIT_FAILURE : EXIT_SUCCESS;
 }

@@ -130,7 +130,7 @@ audio_stop_playback ()
 	     !pa_threaded_mainloop_in_thread (audio.mainloop))
 	{
 	  g_mutex_unlock (&audio.control.controllable.mutex);
-	  usleep (WAIT_TIME_TO_STOP_US);
+	  g_usleep (WAIT_TIME_TO_STOP_US);
 	  g_mutex_lock (&audio.control.controllable.mutex);
 	}
       g_mutex_unlock (&audio.control.controllable.mutex);
@@ -190,7 +190,7 @@ audio_stop_recording ()
 	     !pa_threaded_mainloop_in_thread (audio.mainloop))
 	{
 	  g_mutex_unlock (&audio.control.controllable.mutex);
-	  usleep (WAIT_TIME_TO_STOP_US);
+	  g_usleep (WAIT_TIME_TO_STOP_US);
 	  g_mutex_lock (&audio.control.controllable.mutex);
 	}
       g_mutex_unlock (&audio.control.controllable.mutex);

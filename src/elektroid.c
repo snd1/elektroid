@@ -351,7 +351,7 @@ elektroid_cancel_all_tasks_and_wait ()
   //In this case, the active waiting can not be avoided as the user has canceled the operation.
   while (tasks.transfer.status == TASK_STATUS_RUNNING)
     {
-      usleep (50000);
+      g_usleep (50000);
     }
 }
 

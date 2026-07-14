@@ -124,7 +124,7 @@ volca_sample_2_sample_get_header (struct backend *backend, guint id,
 
   free_msg (rx_msg);
 
-  usleep (VOLCA_SAMPLE_2_REST_TIME_US);
+  g_usleep (VOLCA_SAMPLE_2_REST_TIME_US);
 
   return 0;
 }
@@ -164,7 +164,7 @@ volca_sample_2_sample_get_data (struct backend *backend, guint id,
   common_midi_msg_to_8bit_msg (&rx_msg->data[9], data->data, dump_size);
   free_msg (rx_msg);
 
-  usleep (VOLCA_SAMPLE_2_REST_TIME_US);
+  g_usleep (VOLCA_SAMPLE_2_REST_TIME_US);
 
   return data;
 }
@@ -407,7 +407,7 @@ volca_sample_2_sample_upload_params (struct backend *backend,
       control->part++;
     }
 
-  usleep (VOLCA_SAMPLE_2_REST_TIME_US);
+  g_usleep (VOLCA_SAMPLE_2_REST_TIME_US);
 
   buff_size = 2 + common_8bit_msg_to_midi_msg_size (gsizeruncated);
   buff = g_malloc (buff_size);
@@ -434,7 +434,7 @@ volca_sample_2_sample_upload_params (struct backend *backend,
       control->part++;
     }
 
-  usleep (VOLCA_SAMPLE_2_REST_TIME_US);
+  g_usleep (VOLCA_SAMPLE_2_REST_TIME_US);
 
   return 0;
 }
@@ -934,7 +934,7 @@ volca_sample_2_get_storage_stats (struct backend *backend, guint8 type,
 
 err:
   free_msg (rx_msg);
-  usleep (VOLCA_SAMPLE_2_REST_TIME_US);
+  g_usleep (VOLCA_SAMPLE_2_REST_TIME_US);
   return err;
 }
 

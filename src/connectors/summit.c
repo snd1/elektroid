@@ -209,7 +209,7 @@ summit_patch_next_dentry (struct item_iterator *iter)
     data->fs == FS_SUMMIT_SINGLE_PATCH ? SUMMIT_SINGLE_LEN : SUMMIT_MULTI_LEN;
   data->next++;
 
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
 
   return 0;
 }
@@ -337,7 +337,7 @@ summit_patch_download (struct backend *backend, const gchar *path,
 cleanup:
   free_msg (rx_msg);
 end:
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
   return err;
 }
 
@@ -385,7 +385,7 @@ summit_patch_upload (struct backend *backend, const gchar *path,
 cleanup:
   free_msg (msg);
 end:
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
   return err;
 }
 
@@ -434,7 +434,7 @@ summit_patch_rename (struct backend *backend, const gchar *src,
       goto end;
     }
 
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
 
   name = SUMMIT_GET_NAME_FROM_MSG (preset.content, fs);
   sanitized = common_get_sanitized_name (dst, SUMMIT_ALPHABET,
@@ -452,7 +452,7 @@ summit_patch_rename (struct backend *backend, const gchar *src,
       free_msg (rx_msg);
     }
 
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
 
 end:
   controllable_clear (&control.controllable);
@@ -642,7 +642,7 @@ summit_tuning_download (struct backend *backend, const gchar *path,
 cleanup:
   free_msg (rx_msg);
 end:
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
   return err;
 }
 
@@ -741,7 +741,7 @@ summit_wavetable_next_dentry (struct item_iterator *iter)
   iter->item.size = 2678;
   data->next++;
 
-  usleep (SUMMIT_REST_TIME_US * 10);
+  g_usleep (SUMMIT_REST_TIME_US * 10);
 
   return 0;
 }
@@ -805,7 +805,7 @@ summit_wavetable_download (struct backend *backend, const gchar *path,
   g_byte_array_append (output, rx_msg->data, rx_msg->len);
   free_msg (rx_msg);
 
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
 
   //Waves
   for (gint8 i = 0; i < SUMMIT_WAVETABLE_WAVES; i++)
@@ -825,7 +825,7 @@ summit_wavetable_download (struct backend *backend, const gchar *path,
       g_byte_array_append (output, rx_msg->data, rx_msg->len);
       free_msg (rx_msg);
 
-      usleep (SUMMIT_REST_TIME_US);
+      g_usleep (SUMMIT_REST_TIME_US);
     }
 
   memcpy (name, &output->data[15], SUMMIT_WAVETABLE_NAME_LEN);
@@ -839,7 +839,7 @@ err:
   g_byte_array_free (output, TRUE);
   free_msg (rx_msg);
 end:
-  usleep (SUMMIT_REST_TIME_US);
+  g_usleep (SUMMIT_REST_TIME_US);
   return err;
 }
 

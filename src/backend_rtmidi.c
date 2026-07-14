@@ -225,7 +225,7 @@ backend_rx_raw (struct backend *backend, guint8 *buffer, guint s)
 
   if (!size)
     {
-      usleep (BE_POLL_TIMEOUT_MS * 1000);
+      g_usleep (BE_POLL_TIMEOUT_MS * 1000);
     }
 
   return size;

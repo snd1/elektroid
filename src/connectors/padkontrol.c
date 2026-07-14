@@ -137,7 +137,7 @@ padkontrol_download (struct backend *backend, const gchar *path,
 
   free_msg (rx_msg);
 
-  usleep (PADKONTROL_REST_TIME_US);
+  g_usleep (PADKONTROL_REST_TIME_US);
 
   tx_msg = padkontrol_get_msg (PADKONTROL_FUNC_CURRENT_SCENE_DUMP_OP, 0);
   err = common_data_tx_and_rx_part (backend, tx_msg, &rx_msg, control);
@@ -153,7 +153,7 @@ padkontrol_download (struct backend *backend, const gchar *path,
 
   idata_init (scene, rx_msg, NULL, NULL, NULL);
 
-  usleep (PADKONTROL_REST_TIME_US);
+  g_usleep (PADKONTROL_REST_TIME_US);
 
   return 0;
 }
@@ -192,7 +192,7 @@ padkontrol_upload (struct backend *backend, const gchar *path,
       return -EINVAL;
     }
 
-  usleep (PADKONTROL_REST_TIME_US);
+  g_usleep (PADKONTROL_REST_TIME_US);
 
   id--;				// O based
   tx_msg = padkontrol_get_msg (PADKONTROL_FUNC_SCENE_WRITE_OP, id);
@@ -210,7 +210,7 @@ padkontrol_upload (struct backend *backend, const gchar *path,
 
   free_msg (rx_msg);
 
-  usleep (PADKONTROL_REST_TIME_US);
+  g_usleep (PADKONTROL_REST_TIME_US);
 
   return 0;
 }

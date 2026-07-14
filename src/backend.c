@@ -233,7 +233,7 @@ backend_midi_handshake (struct backend *backend)
 
   free_msg (rx_msg);
 
-  usleep (BE_REST_TIME_US);
+  g_usleep (BE_REST_TIME_US);
 }
 
 //Not synchronized
@@ -421,7 +421,7 @@ backend_init_midi (struct backend *backend, const gchar *id)
 	{
 	  error_print ("Error while stopping device");
 	}
-      usleep (BE_REST_TIME_US);
+      g_usleep (BE_REST_TIME_US);
     }
 
   return err;
