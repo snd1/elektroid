@@ -448,12 +448,6 @@ logue_slot_get_extensions (struct backend *backend,
     }
 }
 
-static gchar *
-logue_2dig_get_id_as_slot (struct item *item, struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 2);
-}
-
 static gint
 logue_clear (struct backend *backend, const gchar *path,
 	     enum logue_module module)
@@ -1525,7 +1519,7 @@ static const struct fs_operations FS_LOGUE_OSC_OPERATIONS = {
   .upload = logue_osc_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_slot = logue_2dig_get_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
@@ -1546,7 +1540,7 @@ static const struct fs_operations FS_LOGUE_MODFX_OPERATIONS = {
   .upload = logue_modfx_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_slot = logue_2dig_get_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path

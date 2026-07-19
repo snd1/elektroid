@@ -550,12 +550,6 @@ microfreak_preset_upload (struct backend *backend, const gchar *path,
   return 0;
 }
 
-static gchar *
-microfreak_get_object_id_as_slot (struct item *item, struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 3);
-}
-
 void
 microfreak_midi_program_change (struct backend *backend, const gchar *dir,
 				struct item *item)
@@ -653,7 +647,7 @@ static const struct fs_operations FS_MICROFREAK_PPRESET_OPERATIONS = {
   .max_name_len = MICROFREAK_PRESET_NAME_LEN,
   .readdir = microfreak_preset_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_object_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nnn,
   .rename = microfreak_preset_rename,
   .download = microfreak_preset_download,
   .upload = microfreak_preset_upload,
@@ -685,7 +679,7 @@ static const struct fs_operations FS_MICROFREAK_ZPRESET_OPERATIONS = {
   .max_name_len = MICROFREAK_PRESET_NAME_LEN,
   .readdir = microfreak_preset_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_object_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nnn,
   .rename = microfreak_preset_rename,
   .download = microfreak_preset_download,
   .upload = microfreak_preset_upload,
@@ -730,7 +724,7 @@ static const struct fs_operations FS_MICROFREAK_PRESET_OPERATIONS = {
   .max_name_len = MICROFREAK_PRESET_NAME_LEN,
   .readdir = microfreak_preset_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_object_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nnn,
   .rename = microfreak_preset_rename,
   .download = microfreak_preset_download,
   .upload = microfreak_preset_upload,
@@ -1895,20 +1889,13 @@ static const struct fs_operations FS_MICROFREAK_SAMPLE_OPERATIONS = {
   .max_name_len = MICROFREAK_SAMPLE_NAME_LEN - 1,
   .readdir = microfreak_sample_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_object_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nnn,
   .delete = microfreak_sample_clear,
   .upload = microfreak_sample_upload,
   .load = microfreak_sample_load,
   .get_exts = sample_get_sample_extensions,
   .get_upload_path = common_slot_get_upload_path
 };
-
-static gchar *
-microfreak_get_wavetable_id_as_slot (struct item *item,
-				     struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 2);
-}
 
 static const gchar **
 microfreak_pwavetable_get_extensions (struct backend *backend,
@@ -1924,7 +1911,7 @@ static const struct fs_operations FS_MICROFREAK_PWAVETABLE_OPERATIONS = {
   .max_name_len = MICROFREAK_WAVETABLE_NAME_LEN - 1,
   .readdir = microfreak_wavetable_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_wavetable_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = microfreak_wavetable_clear,
   .rename = microfreak_wavetable_rename,
   .download = microfreak_wavetable_download,
@@ -1950,7 +1937,7 @@ static const struct fs_operations FS_MICROFREAK_ZWAVETABLE_OPERATIONS = {
   .max_name_len = MICROFREAK_WAVETABLE_NAME_LEN - 1,
   .readdir = microfreak_wavetable_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_wavetable_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = microfreak_wavetable_clear,
   .rename = microfreak_wavetable_rename,
   .download = microfreak_wavetable_download,
@@ -1983,7 +1970,7 @@ static const struct fs_operations FS_MICROFREAK_WAVETABLE_OPERATIONS = {
   .max_name_len = MICROFREAK_WAVETABLE_NAME_LEN - 1,
   .readdir = microfreak_wavetable_read_dir,
   .print_item = common_print_item,
-  .get_slot = microfreak_get_wavetable_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = microfreak_wavetable_clear,
   .rename = microfreak_wavetable_rename,
   .download = microfreak_wavetable_download,

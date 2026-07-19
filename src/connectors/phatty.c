@@ -252,12 +252,6 @@ phatty_read_dir (struct backend *backend, struct item_iterator *iter,
     }
 }
 
-static gchar *
-phatty_get_id_as_slot (struct item *item, struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 3);
-}
-
 static gint
 phatty_download (struct backend *backend, const gchar *path,
 		 struct idata *preset, struct task_control *control)
@@ -400,7 +394,7 @@ static const struct fs_operations FS_PHATTY_PRESET_OPERATIONS = {
   .rename = phatty_rename,
   .download = phatty_download,
   .upload = phatty_upload,
-  .get_slot = phatty_get_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = common_sysex_get_extensions,

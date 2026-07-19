@@ -295,13 +295,6 @@ volca_sample_2_sample_save (struct backend *backend, const gchar *path,
 			      SF_FORMAT_WAV | SF_FORMAT_PCM_16);
 }
 
-static gchar *
-volca_sample_2_get_sample_id_as_slot (struct item *item,
-				      struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 3);
-}
-
 static gint
 volca_sample_2_sample_load (struct backend *backend, const gchar *path,
 			    struct idata *sample,
@@ -476,7 +469,7 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_SAMPLE_OPERATIONS = {
   .file_icon = FS_ICON_WAVE,
   .readdir = volca_sample_2_sample_read_dir,
   .print_item = common_print_item,
-  .get_slot = volca_sample_2_get_sample_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nnn,
   .delete = volca_sample_2_sample_clear,
   .download = volca_sample_2_sample_download,
   .upload = volca_sample_2_sample_upload,
@@ -561,7 +554,7 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_SAMPLE_LOOP_OPERATIONS = {
   .file_icon = FS_ICON_WAVE,
   .readdir = volca_sample_2_sample_read_dir,
   .print_item = common_print_item,
-  .get_slot = volca_sample_2_get_sample_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nnn,
   .delete = volca_sample_2_sample_clear,
   .download = volca_sample_2_sample_loop_download,
   .upload = volca_sample_2_sample_loop_upload,
@@ -571,13 +564,6 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_SAMPLE_LOOP_OPERATIONS = {
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
 };
-
-static gchar *
-volca_sample_2_get_pattern_id_as_slot (struct item *item,
-				       struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 2);
-}
 
 static const gchar **
 volca_sample_2_pattern_get_extensions (struct backend *backend,
@@ -903,7 +889,7 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_PATTERN_OPERATIONS = {
   .max_name_len = VOLCA_SAMPLE_2_PATTERN_NAME_LEN,
   .readdir = volca_sample_2_pattern_read_dir,
   .print_item = common_print_item,
-  .get_slot = volca_sample_2_get_pattern_id_as_slot,
+  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = volca_sample_2_pattern_clear,
   .rename = volca_sample_2_pattern_rename,
   .download = volca_sample_2_pattern_download,

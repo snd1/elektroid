@@ -104,6 +104,18 @@ common_get_id_as_slot_padded (struct item *item, struct backend *backend,
 }
 
 gchar *
+common_get_id_as_slot_padded_nn (struct item *item, struct backend *backend)
+{
+  return common_get_id_as_slot_padded (item, backend, 2);
+}
+
+gchar *
+common_get_id_as_slot_padded_nnn (struct item *item, struct backend *backend)
+{
+  return common_get_id_as_slot_padded (item, backend, 3);
+}
+
+gchar *
 common_get_id_as_slot (struct item *item, struct backend *backend)
 {
   gchar *slot = g_malloc (LABEL_MAX);
