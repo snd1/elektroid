@@ -426,8 +426,8 @@ logue_revfx_read_dir (struct backend *backend,
 }
 
 static const gchar **
-logue_get_extensions (struct backend *backend,
-		      const struct fs_operations *ops)
+logue_slot_get_extensions (struct backend *backend,
+			   const struct fs_operations *ops)
 {
   struct logue_data *data = backend->data;
   if (data->device == LOGUE_DEVICE_PROLOGUE)
@@ -449,7 +449,7 @@ logue_get_extensions (struct backend *backend,
 }
 
 static gchar *
-logue_get_id_as_slot (struct item *item, struct backend *backend)
+logue_2dig_get_id_as_slot (struct item *item, struct backend *backend)
 {
   return common_get_id_as_slot_padded (item, backend, 2);
 }
@@ -1033,9 +1033,9 @@ end:
 }
 
 static gint
-logue_upload (struct backend *backend, const gchar *path,
-	      struct idata *unit, struct task_control *control,
-	      enum logue_module module)
+logue_slot_upload (struct backend *backend, const gchar *path,
+		   struct idata *unit, struct task_control *control,
+		   enum logue_module module)
 {
   gint err;
   guint id;
@@ -1078,28 +1078,32 @@ static gint
 logue_osc_upload (struct backend *backend, const gchar *path,
 		  struct idata *sysex, struct task_control *control)
 {
-  return logue_upload (backend, path, sysex, control, FS_LOGUE_MODULE_OSC);
+  return logue_slot_upload (backend, path, sysex, control,
+			    FS_LOGUE_MODULE_OSC);
 }
 
 static gint
 logue_modfx_upload (struct backend *backend, const gchar *path,
 		    struct idata *sysex, struct task_control *control)
 {
-  return logue_upload (backend, path, sysex, control, FS_LOGUE_MODULE_MODFX);
+  return logue_slot_upload (backend, path, sysex, control,
+			    FS_LOGUE_MODULE_MODFX);
 }
 
 static gint
 logue_delfx_upload (struct backend *backend, const gchar *path,
 		    struct idata *sysex, struct task_control *control)
 {
-  return logue_upload (backend, path, sysex, control, FS_LOGUE_MODULE_DELFX);
+  return logue_slot_upload (backend, path, sysex, control,
+			    FS_LOGUE_MODULE_DELFX);
 }
 
 static gint
 logue_revfx_upload (struct backend *backend, const gchar *path,
 		    struct idata *sysex, struct task_control *control)
 {
-  return logue_upload (backend, path, sysex, control, FS_LOGUE_MODULE_REVFX);
+  return logue_slot_upload (backend, path, sysex, control,
+			    FS_LOGUE_MODULE_REVFX);
 }
 
 static gint
@@ -1433,9 +1437,9 @@ end:
 }
 
 static gint
-logue_download (struct backend *backend, const gchar *path,
-		struct idata *unit, struct task_control *control,
-		enum logue_module module)
+logue_slot_download (struct backend *backend, const gchar *path,
+		     struct idata *unit, struct task_control *control,
+		     enum logue_module module)
 {
   guint id;
   gint err;
@@ -1478,32 +1482,32 @@ static gint
 logue_osc_download (struct backend *backend, const gchar *path,
 		    struct idata *oscillator, struct task_control *control)
 {
-  return logue_download (backend, path, oscillator, control,
-			 FS_LOGUE_MODULE_OSC);
+  return logue_slot_download (backend, path, oscillator, control,
+			      FS_LOGUE_MODULE_OSC);
 }
 
 static gint
 logue_modfx_download (struct backend *backend, const gchar *path,
 		      struct idata *oscillator, struct task_control *control)
 {
-  return logue_download (backend, path, oscillator, control,
-			 FS_LOGUE_MODULE_MODFX);
+  return logue_slot_download (backend, path, oscillator, control,
+			      FS_LOGUE_MODULE_MODFX);
 }
 
 static gint
 logue_delfx_download (struct backend *backend, const gchar *path,
 		      struct idata *oscillator, struct task_control *control)
 {
-  return logue_download (backend, path, oscillator, control,
-			 FS_LOGUE_MODULE_DELFX);
+  return logue_slot_download (backend, path, oscillator, control,
+			      FS_LOGUE_MODULE_DELFX);
 }
 
 static gint
 logue_revfx_download (struct backend *backend, const gchar *path,
 		      struct idata *oscillator, struct task_control *control)
 {
-  return logue_download (backend, path, oscillator, control,
-			 FS_LOGUE_MODULE_REVFX);
+  return logue_slot_download (backend, path, oscillator, control,
+			      FS_LOGUE_MODULE_REVFX);
 }
 
 static const struct fs_operations FS_LOGUE_OSC_OPERATIONS = {
@@ -1521,8 +1525,8 @@ static const struct fs_operations FS_LOGUE_OSC_OPERATIONS = {
   .upload = logue_osc_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_slot = logue_get_id_as_slot,
-  .get_exts = logue_get_extensions,
+  .get_slot = logue_2dig_get_id_as_slot,
+  .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
 };
@@ -1542,8 +1546,8 @@ static const struct fs_operations FS_LOGUE_MODFX_OPERATIONS = {
   .upload = logue_modfx_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_slot = logue_get_id_as_slot,
-  .get_exts = logue_get_extensions,
+  .get_slot = logue_2dig_get_id_as_slot,
+  .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
 };
@@ -1563,7 +1567,7 @@ static const struct fs_operations FS_LOGUE_DELFX_OPERATIONS = {
   .upload = logue_delfx_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_exts = logue_get_extensions,
+  .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
 };
@@ -1583,7 +1587,7 @@ static const struct fs_operations FS_LOGUE_REVFX_OPERATIONS = {
   .upload = logue_revfx_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_exts = logue_get_extensions,
+  .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
 };
