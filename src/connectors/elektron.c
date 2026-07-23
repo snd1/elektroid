@@ -269,19 +269,17 @@ static const guint8 OS_UPGRADE_START_REQUEST[] =
 static const guint8 OS_UPGRADE_WRITE_RESPONSE[] =
   { 0x51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-static gchar *
-elektron_get_id_as_slot (struct item *item, struct backend *backend)
+static void
+elektron_set_slot (struct item *item)
 {
-  gchar *slot = g_malloc (LABEL_MAX);
   if (item->id >= 0)
     {
-      snprintf (slot, LABEL_MAX, "%03d", item->id);
+      snprintf (item->slot, ITEM_SLOT_MAX, "%03d", item->id);
     }
   else
     {
-      slot[0] = 0;
+      item->slot[0] = 0;
     }
-  return slot;
 }
 
 static void
@@ -304,18 +302,15 @@ elektron_print_data (struct item_iterator *iter,
 {
   struct elektron_iterator_data *data = iter->data;
   gchar *hsize = get_human_size (iter->item.size, FALSE);
-  gchar *slot = iter->item.id > 0 ?
-    elektron_get_id_as_slot (&iter->item, backend) : strdup (" -1");
   gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
     *iter->item.object_info;
 
   printf ("%c %04x %d %d %10s %s %-*s%s%s%s\n", iter->item.type,
 	  data->operations, data->has_valid_data, data->has_metadata,
-	  hsize, slot, DEFAULT_MAX_NAME_LEN, iter->item.name,
+	  hsize, iter->item.slot, DEFAULT_MAX_NAME_LEN, iter->item.name,
 	  info ? " [ " : "", iter->item.object_info, info ? " ]" : "");
 
   g_free (hsize);
-  g_free (slot);
 }
 
 static void
@@ -1983,6 +1978,8 @@ elektron_next_data_entry (struct item_iterator *iter)
 	  controllable_clear (&control.controllable);
 	}
 
+      elektron_set_slot (&iter->item);
+
       break;
     default:
       error_print ("Unrecognized data entry: %d", iter->item.type);
@@ -1996,6 +1993,7 @@ not_found:
   iter->item.name[0] = 0;
   iter->item.size = 0;
   iter->item.id++;
+  elektron_set_slot (&iter->item);
   data->operations = 0;
   data->has_valid_data = 0;
   data->has_metadata = 0;
@@ -3377,6 +3375,7 @@ elektron_ram_slot_next_entry (struct item_iterator *iter)
   data->pos += sizeof (guint8);
 
   iter->item.id = id;
+  elektron_set_slot (&iter->item);
   iter->item.type = ITEM_TYPE_FILE;
   item_set_object_info (&iter->item, "%s",
 			used ? ELEKTRON_RAM_SLOT_USED : "");
@@ -3439,6 +3438,7 @@ elektron_ram_read_dir (struct backend *backend,
 				last_ram_slots + 1);
   // Item 0 is always OFF and is not included in the message
   iter->item.id = 1;
+
   return err;
 }
 
@@ -3667,6 +3667,7 @@ elektron_ram_track_next_entry (struct item_iterator *iter)
   data->pos += sizeof (guint16);
 
   iter->item.id++;
+  elektron_set_slot (&iter->item);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = -1;
   item_set_name (&iter->item, "%d", iter->item.id + 1);
@@ -3731,6 +3732,7 @@ elektron_digitakt_track_read_dir (struct backend *backend,
 				ram_tracks_pos + sizeof (guint32),
 				ram_tracks);
   iter->item.id = -1;
+
   return err;
 }
 
@@ -3957,7 +3959,6 @@ static const struct fs_operations FS_DATA_ANY_OPERATIONS = {
   .swap = elektron_swap_data_item_any,
   .download = elektron_download_data_any,
   .upload = elektron_upload_data_any,
-  .get_slot = elektron_get_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = elektron_get_data_any_exts,
@@ -3981,7 +3982,6 @@ static const struct fs_operations FS_DATA_PRJ_OPERATIONS = {
   .swap = elektron_swap_data_item_prj,
   .download = elektron_download_data_prj_pkg,
   .upload = elektron_upload_data_prj_pkg,
-  .get_slot = elektron_get_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = elektron_get_dev_exts,
@@ -4006,7 +4006,6 @@ static const struct fs_operations FS_DATA_SND_OPERATIONS = {
   .swap = elektron_swap_data_item_snd,
   .download = elektron_download_data_snd_pkg,
   .upload = elektron_upload_data_snd_pkg,
-  .get_slot = elektron_get_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = elektron_get_dev_exts,
@@ -4030,7 +4029,6 @@ static const struct fs_operations FS_DATA_PST_OPERATIONS = {
   .swap = elektron_swap_data_item_pst,
   .download = elektron_download_data_pst_pkg,
   .upload = elektron_upload_data_pst_pkg,
-  .get_slot = elektron_get_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = elektron_get_dev_exts,
@@ -4055,7 +4053,6 @@ static const struct fs_operations FS_DATA_TAKT_II_PST_OPERATIONS = {
   .swap = elektron_swap_data_item_snd,
   .download = elektron_download_data_snd_pkg,
   .upload = elektron_upload_data_snd_pkg,
-  .get_slot = elektron_get_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = elektron_get_dev_exts,
@@ -4081,7 +4078,6 @@ static const struct fs_operations FS_DATA_SAMPLES_OPERATIONS = {
   .swap = elektron_swap_data_item_sample,
   .download = elektron_download_data_sample,
   .upload = elektron_upload_data_sample,
-  .get_slot = elektron_get_id_as_slot,
   .load = elektron_sample_load,
   .save = elektron_sample_save,
   .get_exts = sample_get_sample_extensions,
@@ -4107,7 +4103,6 @@ static const struct fs_operations FS_DIGITAKT_RAM_OPERATIONS = {
   .load = elektron_sample_load,
   .save = elektron_sample_save,
   .get_exts = sample_get_sample_extensions,
-  .get_slot = elektron_get_id_as_slot,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = elektron_ram_get_download_path
 };

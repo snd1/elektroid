@@ -939,22 +939,10 @@ browser_add_dentry_item (gpointer data)
 
   if (browser->fs_ops->options & FS_OPTION_SHOW_SLOT_COLUMN)
     {
-      gchar *s;
-
-      if (browser->fs_ops->get_slot)
-	{
-	  s = browser->fs_ops->get_slot (item, browser->backend);
-	}
-      else
-	{
-	  s = common_get_id_as_slot (item, browser->backend);
-	}
-
       g_value_init (&v, G_TYPE_STRING);
-      g_value_set_string (&v, s);
+      g_value_set_string (&v, item->slot);
       gtk_list_store_set_value (list_store, &iter,
 				BROWSER_LIST_STORE_SLOT_FIELD, &v);
-      g_free (s);
       g_value_unset (&v);
     }
 

@@ -215,18 +215,10 @@ padkontrol_upload (struct backend *backend, const gchar *path,
   return 0;
 }
 
-static gchar *
-padkontrol_get_id_as_slot (struct item *item, struct backend *backend)
-{
-  gchar *slot = g_malloc (LABEL_MAX);
-  snprintf (slot, LABEL_MAX, "%02d", item->id);
-  return slot;
-}
-
 static const struct fs_operations FS_PADKONTROL_SCENE_OPERATIONS = {
   .id = FS_PADKONTROL_SCENE,
   .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
-    FS_OPTION_SHOW_SIZE_COLUMN,
+    FS_OPTION_SHOW_SLOT_COLUMN | FS_OPTION_SHOW_SIZE_COLUMN,
   .name = "scene",
   .gui_name = "Scenes",
   .gui_icon = FS_ICON_SETTINGS,
@@ -235,7 +227,6 @@ static const struct fs_operations FS_PADKONTROL_SCENE_OPERATIONS = {
   .print_item = common_print_item,
   .download = padkontrol_download,
   .upload = padkontrol_upload,
-  .get_slot = padkontrol_get_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = common_sysex_get_extensions,

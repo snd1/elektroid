@@ -190,6 +190,7 @@ volca_sample_2_sample_next_dentry (struct item_iterator *iter)
   item_set_name (&iter->item, "%.*s", VOLCA_SAMPLE_2_SAMPLE_NAME_LEN,
 		 header.name);
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, 3);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = GUINT32_FROM_LE (header.frames) * sizeof (gint16);
   sample_info_init (&iter->item.sample_info);
@@ -469,7 +470,6 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_SAMPLE_OPERATIONS = {
   .file_icon = FS_ICON_WAVE,
   .readdir = volca_sample_2_sample_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nnn,
   .delete = volca_sample_2_sample_clear,
   .download = volca_sample_2_sample_download,
   .upload = volca_sample_2_sample_upload,
@@ -554,7 +554,6 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_SAMPLE_LOOP_OPERATIONS = {
   .file_icon = FS_ICON_WAVE,
   .readdir = volca_sample_2_sample_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nnn,
   .delete = volca_sample_2_sample_clear,
   .download = volca_sample_2_sample_loop_download,
   .upload = volca_sample_2_sample_loop_upload,
@@ -714,6 +713,7 @@ volca_sample_2_pattern_next_dentry (struct item_iterator *iter)
       item_set_name (&iter->item, "%s", pattern.name);
     }
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, 2);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = pattern.content->len;
   idata_clear (&pattern);
@@ -889,7 +889,6 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_PATTERN_OPERATIONS = {
   .max_name_len = VOLCA_SAMPLE_2_PATTERN_NAME_LEN,
   .readdir = volca_sample_2_pattern_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = volca_sample_2_pattern_clear,
   .rename = volca_sample_2_pattern_rename,
   .download = volca_sample_2_pattern_download,

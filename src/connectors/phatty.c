@@ -208,6 +208,7 @@ phatty_next_preset_dentry (struct item_iterator *iter)
     {
       item_set_name (&iter->item, "%s", COMMON_PANEL_NAME);
       iter->item.id = PHATTY_PANEL_ID;
+      iter->item.slot[0] = 0;
       iter->item.type = ITEM_TYPE_FILE;
       iter->item.size = PHATTY_PROGRAM_SIZE;
       (data->next)++;
@@ -223,6 +224,7 @@ phatty_next_preset_dentry (struct item_iterator *iter)
       phatty_get_preset_name (rx_msg->data, preset_name);
       item_set_name (&iter->item, "%s", preset_name);
       iter->item.id = data->next;
+      common_slot_set_slot_padded (&iter->item, 2);
       iter->item.type = ITEM_TYPE_FILE;
       iter->item.size = PHATTY_PROGRAM_SIZE;
       (data->next)++;
@@ -394,7 +396,6 @@ static const struct fs_operations FS_PHATTY_PRESET_OPERATIONS = {
   .rename = phatty_rename,
   .download = phatty_download,
   .upload = phatty_upload,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = common_sysex_get_extensions,
@@ -450,7 +451,8 @@ phatty_scale_get_extensions (struct backend *backend,
 
 static const struct fs_operations FS_PHATTY_SCALE_OPERATIONS = {
   .id = FS_PHATTY_SCALE,
-  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE,
+  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
+    FS_OPTION_SHOW_SLOT_COLUMN,
   .name = "scale",
   .gui_name = "Scales",
   .gui_icon = FS_ICON_KEYS,

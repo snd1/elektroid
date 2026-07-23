@@ -360,7 +360,8 @@ volca_sample_delete (struct backend *backend, const gchar *path)
 static const struct fs_operations FS_VOLCA_SAMPLE_OPERATIONS = {
   .id = FS_VOLCA_SAMPLE,
   .options = FS_OPTION_SAMPLE_EDITOR | FS_OPTION_MONO | FS_OPTION_SINGLE_OP |
-    FS_OPTION_SLOT_STORAGE | FS_OPTION_AUDIO_LINK,
+    FS_OPTION_SLOT_STORAGE | FS_OPTION_SHOW_SLOT_COLUMN |
+    FS_OPTION_AUDIO_LINK,
   .name = "sample",
   .gui_name = "Samples",
   .gui_icon = FS_ICON_WAVE,
@@ -377,7 +378,8 @@ static const struct fs_operations FS_VOLCA_SAMPLE_OPERATIONS = {
 static const struct fs_operations FS_VOLCA_SAMPLE_COMP_16B_OPERATIONS = {
   .id = FS_VOLCA_SAMPLE_COMP_16B,
   .options = FS_OPTION_SAMPLE_EDITOR | FS_OPTION_MONO | FS_OPTION_SINGLE_OP |
-    FS_OPTION_SLOT_STORAGE | FS_OPTION_AUDIO_LINK,
+    FS_OPTION_SLOT_STORAGE | FS_OPTION_SHOW_SLOT_COLUMN |
+    FS_OPTION_AUDIO_LINK,
   .name = "sample-comp-16b",
   .gui_name = "Samples compressed 16 bits",
   .gui_icon = FS_ICON_WAVE,
@@ -394,7 +396,8 @@ static const struct fs_operations FS_VOLCA_SAMPLE_COMP_16B_OPERATIONS = {
 static const struct fs_operations FS_VOLCA_SAMPLE_COMP_8B_OPERATIONS = {
   .id = FS_VOLCA_SAMPLE_COMP_8B,
   .options = FS_OPTION_SAMPLE_EDITOR | FS_OPTION_MONO | FS_OPTION_SINGLE_OP |
-    FS_OPTION_SLOT_STORAGE | FS_OPTION_AUDIO_LINK,
+    FS_OPTION_SLOT_STORAGE | FS_OPTION_SHOW_SLOT_COLUMN |
+    FS_OPTION_AUDIO_LINK,
   .name = "sample-comp-8b",
   .gui_name = "Samples compressed 8 bits",
   .gui_icon = FS_ICON_WAVE,
@@ -410,7 +413,8 @@ static const struct fs_operations FS_VOLCA_SAMPLE_COMP_8B_OPERATIONS = {
 
 static const struct fs_operations FS_VOLCA_SAMPLE_DUMP_OPERATIONS = {
   .id = FS_VOLCA_SAMPLE_DUMP,
-  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE,
+  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
+    FS_OPTION_SHOW_SLOT_COLUMN,
   .name = "sample-dump",
   .readdir = volca_sample_read_dir,
   .delete = volca_sample_delete,
@@ -423,7 +427,8 @@ static const struct fs_operations FS_VOLCA_SAMPLE_DUMP_OPERATIONS = {
 
 static const struct fs_operations FS_VOLCA_SAMPLE_COMP_16B_DUMP_OPERATIONS = {
   .id = FS_VOLCA_SAMPLE_COMP_16B_DUMP,
-  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE,
+  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
+    FS_OPTION_SHOW_SLOT_COLUMN,
   .name = "sample-comp-16b-dump",
   .readdir = volca_sample_read_dir,
   .delete = volca_sample_delete,
@@ -436,7 +441,8 @@ static const struct fs_operations FS_VOLCA_SAMPLE_COMP_16B_DUMP_OPERATIONS = {
 
 static const struct fs_operations FS_VOLCA_SAMPLE_COMP_8B_DUMP_OPERATIONS = {
   .id = FS_VOLCA_SAMPLE_COMP_8B_DUMP,
-  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE,
+  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
+    FS_OPTION_SHOW_SLOT_COLUMN,
   .name = "sample-comp-8b-dump",
   .readdir = volca_sample_read_dir,
   .delete = volca_sample_delete,

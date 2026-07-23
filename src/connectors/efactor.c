@@ -121,6 +121,21 @@ efactor_new_get_msg (guint8 type, const gchar *key)
   return tx_msg;
 }
 
+static void
+efactor_set_slot (struct item *item, struct efactor_data *data)
+{
+  if (data->type == EFACTOR_FACTOR)
+    {
+      //This is a bit of a hack since not only are we showing the ID but also the bank-preset pair.
+      snprintf (item->slot, ITEM_SLOT_MAX, "%02d [%d:%d]", item->id,
+		(item->id / 2) + 1, (item->id % 2) + 1);
+    }
+  else
+    {
+      snprintf (item->slot, ITEM_SLOT_MAX, "%02d", item->id + 1);
+    }
+}
+
 static gint
 efactor_next_dentry (struct item_iterator *iter)
 {
@@ -134,6 +149,7 @@ efactor_next_dentry (struct item_iterator *iter)
     }
 
   iter->item.id = data->next + backend_data->min;
+  efactor_set_slot (&iter->item, backend_data);
   preset_name = data->backend_data->lines[data->next * 7 + 6];
   item_set_name (&iter->item, "%s", preset_name);
   iter->item.type = ITEM_TYPE_FILE;
@@ -378,24 +394,6 @@ end:
   return err;
 }
 
-static gchar *
-efactor_get_slot (struct item *item, struct backend *backend)
-{
-  gchar *slot = g_malloc (LABEL_MAX);
-  struct efactor_data *data = backend->data;
-  if (data->type == EFACTOR_FACTOR)
-    {
-      //This is a bit of a hack since not only are we showing the ID but also the bank-preset pair.
-      snprintf (slot, LABEL_MAX, "%02d [%d:%d]", item->id,
-		(item->id / 2) + 1, (item->id % 2) + 1);
-    }
-  else
-    {
-      snprintf (slot, LABEL_MAX, "%02d", item->id + 1);
-    }
-  return slot;
-}
-
 static const struct fs_operations FS_EFACTOR_OPERATIONS = {
   .id = FS_EFACTOR_PRESET,
   .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
@@ -410,7 +408,6 @@ static const struct fs_operations FS_EFACTOR_OPERATIONS = {
   .rename = efactor_rename,
   .download = efactor_download,
   .upload = efactor_upload,
-  .get_slot = efactor_get_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = common_sysex_get_extensions,

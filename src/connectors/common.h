@@ -54,16 +54,7 @@ gchar *common_slot_get_upload_path (struct backend *backend,
 
 gint common_slot_get_id_from_path (const char *path, guint * id);
 
-gchar *common_get_id_as_slot (struct item *item, struct backend *backend);
-
-gchar *common_get_id_as_slot_padded (struct item *item,
-				     struct backend *backend, gint digits);
-
-gchar *common_get_id_as_slot_padded_nn (struct item *item,
-					struct backend *backend);
-
-gchar *common_get_id_as_slot_padded_nnn (struct item *item,
-					 struct backend *backend);
+void common_slot_set_slot_padded (struct item *item, gint digits);
 
 void common_print_item (struct item_iterator *iter, struct backend *backend,
 			const struct fs_operations *fs_ops);

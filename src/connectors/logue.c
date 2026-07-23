@@ -228,7 +228,7 @@ logue_get_msg_op_type_id (struct logue_data *logue_data, guint8 op,
 static gint
 logue_next_dentry (struct item_iterator *iter)
 {
-  guint rx_msg_len;
+  guint rx_msg_len, digits;
   GByteArray *tx_msg, *rx_msg;
   struct logue_iter_data *iter_data = iter->data;
   struct logue_data *logue_data = iter_data->backend->data;
@@ -291,6 +291,16 @@ logue_next_dentry (struct item_iterator *iter)
     }
 
   iter->item.id = iter_data->next;
+  switch (iter_data->module)
+    {
+    case FS_LOGUE_MODULE_OSC:
+    case FS_LOGUE_MODULE_MODFX:
+      digits = 2;
+      break;
+    default:
+      digits = 1;
+    }
+  common_slot_set_slot_padded (&iter->item, digits);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = -1;
 
@@ -1519,7 +1529,6 @@ static const struct fs_operations FS_LOGUE_OSC_OPERATIONS = {
   .upload = logue_osc_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path
@@ -1540,7 +1549,6 @@ static const struct fs_operations FS_LOGUE_MODFX_OPERATIONS = {
   .upload = logue_modfx_upload,
   .load = common_file_load,
   .save = common_file_save,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .get_exts = logue_slot_get_extensions,
   .get_upload_path = common_slot_get_upload_path,
   .get_download_path = common_system_get_download_path

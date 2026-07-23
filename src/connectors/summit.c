@@ -159,6 +159,19 @@ summit_get_category_name (GByteArray *rx_msg)
     }
 }
 
+static void
+summit_set_slot (struct item *item)
+{
+  if (item->id < BE_MAX_MIDI_PROGRAMS)
+    {
+      common_slot_set_slot_padded (item, 3);
+    }
+  else
+    {
+      item->slot[0] = 0;
+    }
+}
+
 static gint
 summit_patch_next_dentry (struct item_iterator *iter)
 {
@@ -190,6 +203,7 @@ summit_patch_next_dentry (struct item_iterator *iter)
   free_msg (rx_msg);
 
   iter->item.id = data->next;
+  summit_set_slot (&iter->item);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size =
     data->fs == FS_SUMMIT_SINGLE_PATCH ? SUMMIT_SINGLE_LEN : SUMMIT_MULTI_LEN;
@@ -208,6 +222,7 @@ summit_patch_next_dentry_root (struct item_iterator *iter)
   if (*next < 4)
     {
       iter->item.id = 0x10000 + *next;	//Unique id
+      summit_set_slot (&iter->item);
       item_set_name (&iter->item, "%c", 0x41 + iter->item.id);
       iter->item.type = ITEM_TYPE_DIR;
       iter->item.size = -1;
@@ -458,28 +473,6 @@ summit_multi_rename (struct backend *backend, const gchar *src,
   return summit_patch_rename (backend, src, dst, FS_SUMMIT_MULTI_PATCH);
 }
 
-static gchar *
-summit_get_id_as_slot (struct item *item, struct backend *backend,
-		       gint digits)
-{
-  gchar *slot = g_malloc (LABEL_MAX);
-  if (item->id < BE_MAX_MIDI_PROGRAMS)
-    {
-      snprintf (slot, LABEL_MAX, "%.*d", digits, item->id);
-    }
-  else
-    {
-      slot[0] = 0;
-    }
-  return slot;
-}
-
-static gchar *
-summit_get_patch_id_as_slot (struct item *item, struct backend *backend)
-{
-  return summit_get_id_as_slot (item, backend, 3);
-}
-
 static void
 summit_common_patch_change (struct backend *backend, guint8 type,
 			    const gchar *dir, struct item *item)
@@ -535,7 +528,6 @@ static const struct fs_operations FS_SUMMIT_SINGLE_OPERATIONS = {
   .rename = summit_single_rename,
   .download = summit_single_download,
   .upload = summit_single_upload,
-  .get_slot = summit_get_patch_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = common_sysex_get_extensions,
@@ -559,7 +551,6 @@ static const struct fs_operations FS_SUMMIT_MULTI_OPERATIONS = {
   .rename = summit_multi_rename,
   .download = summit_multi_download,
   .upload = summit_multi_upload,
-  .get_slot = summit_get_patch_id_as_slot,
   .load = common_file_load,
   .save = common_file_save,
   .get_exts = common_sysex_get_extensions,
@@ -684,7 +675,8 @@ summit_tuning_get_extensions (struct backend *backend,
 
 static const struct fs_operations FS_SUMMIT_BULK_TUNING_OPERATIONS = {
   .id = FS_SUMMIT_BULK_TUNING,
-  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE,
+  .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
+    FS_OPTION_SHOW_SLOT_COLUMN,
   .name = "tuning",
   .gui_name = "Tuning Tables",
   .gui_icon = FS_ICON_KEYS,

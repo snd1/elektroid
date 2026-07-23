@@ -94,66 +94,31 @@ end:
   return err;
 }
 
-gchar *
-common_get_id_as_slot_padded (struct item *item, struct backend *backend,
-			      gint digits)
+void
+common_slot_set_slot_padded (struct item *item, gint digits)
 {
-  gchar *slot = g_malloc (LABEL_MAX);
-  snprintf (slot, LABEL_MAX, "%.*d", digits, item->id);
-  return slot;
-}
-
-gchar *
-common_get_id_as_slot_padded_nn (struct item *item, struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 2);
-}
-
-gchar *
-common_get_id_as_slot_padded_nnn (struct item *item, struct backend *backend)
-{
-  return common_get_id_as_slot_padded (item, backend, 3);
-}
-
-gchar *
-common_get_id_as_slot (struct item *item, struct backend *backend)
-{
-  gchar *slot = g_malloc (LABEL_MAX);
-  snprintf (slot, LABEL_MAX, "%d", item->id);
-  return slot;
+  snprintf (item->slot, ITEM_SLOT_MAX, "%.*d", digits, item->id);
 }
 
 void
 common_print_item (struct item_iterator *iter, struct backend *backend,
 		   const struct fs_operations *fs_ops)
 {
-  gchar *slot = NULL;
   gchar *hsize = get_human_size (iter->item.size, FALSE);
   gint max_name_len = fs_ops->max_name_len ? fs_ops->max_name_len :
     DEFAULT_MAX_NAME_LEN;
   gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
     *iter->item.object_info;
 
-  if (fs_ops->options & FS_OPTION_SLOT_STORAGE)
-    {
-      if (fs_ops->get_slot)
-	{
-	  slot = fs_ops->get_slot (&iter->item, backend);
-	}
-      else
-	{
-	  slot = common_get_id_as_slot (&iter->item, backend);
-	}
-    }
-
-  printf ("%c %10s %.*s%s%-*s%s%s%s\n", iter->item.type, hsize,
-	  slot ? 10 : 0, slot, slot ? " " : "",
+  printf ("%c %10s %*d %10s%s%-*s%s%s%s\n", iter->item.type, hsize, 10,
+	  iter->item.id,
+	  fs_ops->options & FS_OPTION_SLOT_STORAGE ? iter->item.slot : "",
+	  fs_ops->options & FS_OPTION_SLOT_STORAGE ? " " : "",
 	  info ? max_name_len : (gint) strlen (iter->item.name),
 	  iter->item.name, info ? " [ " : "",
 	  info ? iter->item.object_info : "", info ? " ]" : "");
 
   g_free (hsize);
-  g_free (slot);
 }
 
 void
@@ -186,8 +151,9 @@ common_simple_next_dentry (struct item_iterator *iter)
       return -ENOENT;
     }
 
-  item_set_name (&iter->item, "%.*d", digits, data->next);
+  item_set_name (&iter->item, "");
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, digits);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = -1;
   data->next++;

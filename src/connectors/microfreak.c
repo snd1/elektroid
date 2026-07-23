@@ -260,6 +260,7 @@ microfreak_next_preset_dentry (struct item_iterator *iter)
   item_set_name (&iter->item, "%s", preset_name);
 
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, 3);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = -1;
   category = microfreak_get_category_name (rx_msg);
@@ -647,7 +648,6 @@ static const struct fs_operations FS_MICROFREAK_PPRESET_OPERATIONS = {
   .max_name_len = MICROFREAK_PRESET_NAME_LEN,
   .readdir = microfreak_preset_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nnn,
   .rename = microfreak_preset_rename,
   .download = microfreak_preset_download,
   .upload = microfreak_preset_upload,
@@ -679,7 +679,6 @@ static const struct fs_operations FS_MICROFREAK_ZPRESET_OPERATIONS = {
   .max_name_len = MICROFREAK_PRESET_NAME_LEN,
   .readdir = microfreak_preset_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nnn,
   .rename = microfreak_preset_rename,
   .download = microfreak_preset_download,
   .upload = microfreak_preset_upload,
@@ -724,7 +723,6 @@ static const struct fs_operations FS_MICROFREAK_PRESET_OPERATIONS = {
   .max_name_len = MICROFREAK_PRESET_NAME_LEN,
   .readdir = microfreak_preset_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nnn,
   .rename = microfreak_preset_rename,
   .download = microfreak_preset_download,
   .upload = microfreak_preset_upload,
@@ -793,6 +791,7 @@ microfreak_next_sample_dentry (struct item_iterator *iter)
 				   (guint8 *) & header);
   item_set_name (&iter->item, "%s", header.name);
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, 3);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = GINT32_FROM_LE (header.size);
   sample_info_init (&iter->item.sample_info);
@@ -1318,6 +1317,7 @@ microfreak_next_wavetable_dentry (struct item_iterator *iter)
 				   (guint8 *) & header);
   item_set_name (&iter->item, "%s", header.name);
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, 2);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = header.status0 == MICROFREAK_WAVETABLE_EMPTY ?
     0 : MICROFREAK_WAVETABLE_SIZE;
@@ -1889,7 +1889,6 @@ static const struct fs_operations FS_MICROFREAK_SAMPLE_OPERATIONS = {
   .max_name_len = MICROFREAK_SAMPLE_NAME_LEN - 1,
   .readdir = microfreak_sample_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nnn,
   .delete = microfreak_sample_clear,
   .upload = microfreak_sample_upload,
   .load = microfreak_sample_load,
@@ -1911,7 +1910,6 @@ static const struct fs_operations FS_MICROFREAK_PWAVETABLE_OPERATIONS = {
   .max_name_len = MICROFREAK_WAVETABLE_NAME_LEN - 1,
   .readdir = microfreak_wavetable_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = microfreak_wavetable_clear,
   .rename = microfreak_wavetable_rename,
   .download = microfreak_wavetable_download,
@@ -1937,7 +1935,6 @@ static const struct fs_operations FS_MICROFREAK_ZWAVETABLE_OPERATIONS = {
   .max_name_len = MICROFREAK_WAVETABLE_NAME_LEN - 1,
   .readdir = microfreak_wavetable_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = microfreak_wavetable_clear,
   .rename = microfreak_wavetable_rename,
   .download = microfreak_wavetable_download,
@@ -1970,7 +1967,6 @@ static const struct fs_operations FS_MICROFREAK_WAVETABLE_OPERATIONS = {
   .max_name_len = MICROFREAK_WAVETABLE_NAME_LEN - 1,
   .readdir = microfreak_wavetable_read_dir,
   .print_item = common_print_item,
-  .get_slot = common_get_id_as_slot_padded_nn,
   .delete = microfreak_wavetable_clear,
   .rename = microfreak_wavetable_rename,
   .download = microfreak_wavetable_download,
