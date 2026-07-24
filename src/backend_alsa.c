@@ -296,7 +296,7 @@ backend_get_system_subdevices (snd_ctl_t *ctl, int card_id, int device_id,
   int subs, subs_in, subs_out;
   int sub;
   int err;
-  struct backend_device *backend_device;
+  struct backend_device backend_device;
 
   snd_rawmidi_info_alloca (&info);
   snd_rawmidi_info_set_device (info, device_id);
@@ -368,20 +368,20 @@ backend_get_system_subdevices (snd_ctl_t *ctl, int card_id, int device_id,
 
       debug_print (1, "Adding hw:%d (name '%s', subname '%s')...", card_id,
 		   name, sub_name);
-      backend_device = g_malloc (sizeof (struct backend_device));
-      backend_device->type = BE_TYPE_MIDI;
+
+      backend_device.type = BE_TYPE_MIDI;
       if (sub == 0 && !*sub_name)
 	{
-	  snprintf (backend_device->id, LABEL_MAX, BE_DEVICE_NAME, card_id,
+	  snprintf (backend_device.id, LABEL_MAX, BE_DEVICE_NAME, card_id,
 		    device_id);
-	  snprintf (backend_device->name, LABEL_MAX, BE_DEVICE_NAME ": %s",
+	  snprintf (backend_device.name, LABEL_MAX, BE_DEVICE_NAME ": %s",
 		    card_id, device_id, name);
 	}
       else
 	{
-	  snprintf (backend_device->id, LABEL_MAX, BE_DEVICE_NAME_SUB,
-		    card_id, device_id, sub);
-	  snprintf (backend_device->name, LABEL_MAX,
+	  snprintf (backend_device.id, LABEL_MAX, BE_DEVICE_NAME_SUB, card_id,
+		    device_id, sub);
+	  snprintf (backend_device.name, LABEL_MAX,
 		    BE_DEVICE_NAME_SUB ": %s", card_id, device_id, sub,
 		    sub_name);
 	}
