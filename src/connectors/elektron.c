@@ -305,9 +305,11 @@ elektron_print_data (struct item_iterator *iter,
   gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
     *iter->item.object_info;
 
-  printf ("%c %04x %d %d %10s %s %-*s%s%s%s\n", iter->item.type,
+  printf ("%c %04x %d %d %*s %*s %-*s%s%s%s\n", iter->item.type,
 	  data->operations, data->has_valid_data, data->has_metadata,
-	  hsize, iter->item.slot, DEFAULT_MAX_NAME_LEN, iter->item.name,
+	  DEFAULT_PRINT_COL_SIZE_LEN, hsize,
+	  DEFAULT_PRINT_COL_SLOT_LEN, iter->item.slot,
+	  DEFAULT_PRINT_COL_NAME_LEN, iter->item.name,
 	  info ? " [ " : "", iter->item.object_info, info ? " ]" : "");
 
   g_free (hsize);
@@ -4096,7 +4098,6 @@ static const struct fs_operations FS_DIGITAKT_RAM_OPERATIONS = {
   .gui_icon = FS_ICON_CHIP,
   .file_icon = FS_ICON_WAVE,
   .readdir = elektron_ram_read_dir,
-  .print_item = common_print_item,
   .delete = elektron_ram_clear_sample,
   .download = elektron_ram_download_sample,
   .upload = elektron_ram_upload_sample,
@@ -4116,7 +4117,6 @@ static const struct fs_operations FS_DIGITAKT_TRACK_OPERATIONS = {
   .gui_icon = FS_ICON_TRACK,
   .file_icon = FS_ICON_WAVE,
   .readdir = elektron_digitakt_track_read_dir,
-  .print_item = common_print_item,
   .upload = elektron_digitakt_track_upload_sample,
   .load = elektron_sample_load,
   .get_exts = sample_get_sample_extensions,
@@ -4132,7 +4132,6 @@ static const struct fs_operations FS_DIGITAKT_TRACK_LOOP_OPERATIONS = {
   .gui_icon = FS_ICON_TRACK_LOOP,
   .file_icon = FS_ICON_WAVE,
   .readdir = elektron_digitakt_track_read_dir,
-  .print_item = common_print_item,
   .upload = elektron_digitakt_track_loop_upload_sample,
   .load = elektron_sample_load,
   .get_exts = sample_get_sample_extensions,

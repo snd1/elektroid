@@ -64,6 +64,11 @@ enum item_type
 #define ITEM_SLOT_MAX 32
 #define ITEM_OBJECT_INFO_MAX PATH_MAX
 
+#define DEFAULT_PRINT_COL_SIZE_LEN 10
+#define DEFAULT_PRINT_COL_ID_LEN 10
+#define DEFAULT_PRINT_COL_SLOT_LEN 10
+#define DEFAULT_PRINT_COL_NAME_LEN 32
+
 struct item
 {
   enum item_type type;
@@ -149,7 +154,7 @@ struct fs_operations
   guint32 max_name_len;
   fs_init_iter_func readdir;	//This function runs on its own thread so it can take as long as needed in order to make calls to item_iterator_next not to wait for IO.
   fs_file_exists file_exists;
-  fs_print_item print_item;
+  fs_print_item print_item;	// Optional. If not used, the default printing will be used.
   fs_path_func mkdir;
   fs_path_func delete;
   fs_src_dst_func rename;

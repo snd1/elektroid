@@ -478,7 +478,6 @@ static const struct fs_operations FS_MICROBRUTE_OPERATIONS = {
   .gui_icon = FS_ICON_SEQUENCE,
   .file_icon = FS_ICON_SEQUENCE,
   .readdir = microbrute_read_dir,
-  .print_item = common_print_item,
   .download = microbrute_download,
   .upload = microbrute_upload,
   .load = common_file_load,

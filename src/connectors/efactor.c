@@ -404,7 +404,6 @@ static const struct fs_operations FS_EFACTOR_OPERATIONS = {
   .file_icon = FS_ICON_PRESET,
   .max_name_len = EFACTOR_MAX_NAME_LEN,
   .readdir = efactor_read_dir,
-  .print_item = common_print_item,
   .rename = efactor_rename,
   .download = efactor_download,
   .upload = efactor_upload,

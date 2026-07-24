@@ -307,7 +307,6 @@ static const struct fs_operations FS_PROGRAM_CZ_OPERATIONS = {
   .gui_icon = FS_ICON_PRESET,
   .file_icon = FS_ICON_PRESET,
   .readdir = cz_read_dir,
-  .print_item = common_print_item,
   .download = cz_download,
   .upload = cz_upload,
   .load = common_file_load,

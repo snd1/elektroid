@@ -101,27 +101,6 @@ common_slot_set_slot_padded (struct item *item, gint digits)
 }
 
 void
-common_print_item (struct item_iterator *iter, struct backend *backend,
-		   const struct fs_operations *fs_ops)
-{
-  gchar *hsize = get_human_size (iter->item.size, FALSE);
-  gint max_name_len = fs_ops->max_name_len ? fs_ops->max_name_len :
-    DEFAULT_MAX_NAME_LEN;
-  gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
-    *iter->item.object_info;
-
-  printf ("%c %10s %*d %10s%s%-*s%s%s%s\n", iter->item.type, hsize, 10,
-	  iter->item.id,
-	  fs_ops->options & FS_OPTION_SLOT_STORAGE ? iter->item.slot : "",
-	  fs_ops->options & FS_OPTION_SLOT_STORAGE ? " " : "",
-	  info ? max_name_len : (gint) strlen (iter->item.name),
-	  iter->item.name, info ? " [ " : "",
-	  info ? iter->item.object_info : "", info ? " ]" : "");
-
-  g_free (hsize);
-}
-
-void
 common_midi_program_change_int (struct backend *backend, const gchar *dir,
 				guint32 program)
 {

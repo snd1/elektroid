@@ -21,8 +21,6 @@
 #include "connector.h"
 #include "sample.h"
 
-#define DEFAULT_MAX_NAME_LEN 32
-
 #define COMMON_GET_MIDI_BANK(p) ((p & 0x3f80) >> 7)
 #define COMMON_GET_MIDI_PRESET(p) (p & 0x7f)
 
@@ -55,9 +53,6 @@ gchar *common_slot_get_upload_path (struct backend *backend,
 gint common_slot_get_id_from_path (const char *path, guint * id);
 
 void common_slot_set_slot_padded (struct item *item, gint digits);
-
-void common_print_item (struct item_iterator *iter, struct backend *backend,
-			const struct fs_operations *fs_ops);
 
 void common_midi_program_change (struct backend *backend, const gchar * dir,
 				 struct item *item);

@@ -172,6 +172,32 @@ end:
   return err;
 }
 
+static void
+cli_print_item (struct item_iterator *iter, struct backend *backend,
+		const struct fs_operations *fs_ops)
+{
+  gchar id[LABEL_MAX];
+  gchar *hsize = get_human_size (iter->item.size, FALSE);
+  gboolean slot = fs_ops->options & FS_OPTION_SLOT_STORAGE;
+  gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
+    *iter->item.object_info;
+
+  snprintf (id, LABEL_MAX, "%d ", iter->item.id);
+  printf ("%c %*s %s%*s%*s%s%-*s%s%s%s\n", iter->item.type,
+	  DEFAULT_PRINT_COL_SIZE_LEN, hsize,
+	  slot ? " " : "",
+	  slot ? DEFAULT_PRINT_COL_ID_LEN : 0,
+	  slot ? id : "",
+	  slot ? DEFAULT_PRINT_COL_SLOT_LEN : 0,
+	  slot ? iter->item.slot : "",
+	  slot ? " " : "",
+	  DEFAULT_PRINT_COL_NAME_LEN, iter->item.name,
+	  info ? " [ " : "",
+	  info ? iter->item.object_info : "", info ? " ]" : "");
+
+  g_free (hsize);
+}
+
 static gint
 cli_list (int argc, gchar *argv[], int *optind)
 {
@@ -198,7 +224,6 @@ cli_list (int argc, gchar *argv[], int *optind)
     }
 
   RETURN_IF_NULL (fs_ops->readdir);
-  RETURN_IF_NULL (fs_ops->print_item);
   RETURN_IF_NULL (fs_ops->get_exts);
 
   path = cli_get_path (device_path);
@@ -212,7 +237,14 @@ cli_list (int argc, gchar *argv[], int *optind)
   while (!item_iterator_next (&iter) &&
 	 controllable_is_active (&controllable))
     {
-      fs_ops->print_item (&iter, &backend, fs_ops);
+      if (fs_ops->print_item)
+	{
+	  fs_ops->print_item (&iter, &backend, fs_ops);
+	}
+      else
+	{
+	  cli_print_item (&iter, &backend, fs_ops);
+	}
     }
 
   item_iterator_free (&iter);

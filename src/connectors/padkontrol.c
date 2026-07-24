@@ -224,7 +224,6 @@ static const struct fs_operations FS_PADKONTROL_SCENE_OPERATIONS = {
   .gui_icon = FS_ICON_SETTINGS,
   .file_icon = FS_ICON_SETTINGS,
   .readdir = padkontrol_read_dir,
-  .print_item = common_print_item,
   .download = padkontrol_download,
   .upload = padkontrol_upload,
   .load = common_file_load,
