@@ -423,10 +423,11 @@ common_midi_msg_to_8bit_msg (guint8 *msg_midi, guint8 *msg_8bit,
 {
   guint8 *dst = msg_8bit;
   guint8 *src = msg_midi;
-  for (guint i = 0; i < input_size; i++)
+  for (guint i = 0; i < input_size;)
     {
       guint8 bits = *src;
       src++;
+      i++;
       for (guint j = 0; j < 7 && i < input_size; j++, i++, src++, dst++)
 	{
 	  *dst = *src | (bits & 0x1 ? 0x80 : 0);
