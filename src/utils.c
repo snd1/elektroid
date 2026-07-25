@@ -356,34 +356,31 @@ file_save (const gchar *path, struct idata *idata,
   return file_save_data (path, idata->content->data, idata->content->len);
 }
 
-gchar *
-get_human_size (gint64 size, gboolean with_space)
+void
+get_human_size (gint64 size, gboolean with_space, gchar *buffer, guint len)
 {
-  gchar *label = g_malloc (LABEL_MAX);
   gchar *space = with_space ? " " : "";
 
   if (size < 0)
     {
-      *label = 0;
+      *buffer = 0;
     }
   else if (size < KI)
     {
-      snprintf (label, LABEL_MAX, "%" PRId64 "%sB", size, space);
+      snprintf (buffer, len, "%" PRId64 "%sB", size, space);
     }
   else if (size < MI)
     {
-      snprintf (label, LABEL_MAX, "%.4g%sKiB", size / (double) KI, space);
+      snprintf (buffer, len, "%.4g%sKiB", size / (double) KI, space);
     }
   else if (size < GI)
     {
-      snprintf (label, LABEL_MAX, "%.4g%sMiB", size / (double) MI, space);
+      snprintf (buffer, len, "%.4g%sMiB", size / (double) MI, space);
     }
   else
     {
-      snprintf (label, LABEL_MAX, "%.4g%sGiB", size / (double) GI, space);
+      snprintf (buffer, len, "%.4g%sGiB", size / (double) GI, space);
     }
-
-  return label;
 }
 
 void

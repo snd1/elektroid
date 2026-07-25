@@ -287,12 +287,12 @@ elektron_print_smplrw (struct item_iterator *iter,
 		       struct backend *backend,
 		       const struct fs_operations *fs_ops)
 {
-  gchar *hsize = get_human_size (iter->item.size, FALSE);
+  gchar hsize[LABEL_MAX];
   struct elektron_iterator_data *data = iter->data;
 
+  get_human_size (iter->item.size, FALSE, hsize, LABEL_MAX);
   printf ("%c %10s %08x %s\n", iter->item.type,
 	  hsize, data->hash, iter->item.name);
-  g_free (hsize);
 }
 
 static void
@@ -300,19 +300,18 @@ elektron_print_data (struct item_iterator *iter,
 		     struct backend *backend,
 		     const struct fs_operations *fs_ops)
 {
+  gchar hsize[LABEL_MAX];
   struct elektron_iterator_data *data = iter->data;
-  gchar *hsize = get_human_size (iter->item.size, FALSE);
   gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
     *iter->item.object_info;
 
+  get_human_size (iter->item.size, FALSE, hsize, LABEL_MAX);
   printf ("%c %04x %d %d %*s %*s %-*s%s%s%s\n", iter->item.type,
 	  data->operations, data->has_valid_data, data->has_metadata,
 	  DEFAULT_PRINT_COL_SIZE_LEN, hsize,
 	  DEFAULT_PRINT_COL_SLOT_LEN, iter->item.slot,
 	  DEFAULT_PRINT_COL_NAME_LEN, iter->item.name,
 	  info ? " [ " : "", iter->item.object_info, info ? " ]" : "");
-
-  g_free (hsize);
 }
 
 static void

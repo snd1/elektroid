@@ -177,11 +177,19 @@ cli_print_item (struct item_iterator *iter, struct backend *backend,
 		const struct fs_operations *fs_ops)
 {
   gchar id[LABEL_MAX];
-  gchar *hsize = get_human_size (iter->item.size, FALSE);
+  gchar hsize[LABEL_MAX];
   gboolean slot = fs_ops->options & FS_OPTION_SLOT_STORAGE;
   gboolean info = (fs_ops->options & FS_OPTION_SHOW_INFO_COLUMN) &&
     *iter->item.object_info;
 
+  if (iter->item.size > -1)
+    {
+      get_human_size (iter->item.size, FALSE, hsize, LABEL_MAX);
+    }
+  else
+    {
+      snprintf (hsize, LABEL_MAX, "?B");
+    }
   snprintf (id, LABEL_MAX, "%d ", iter->item.id);
   printf ("%c %*s %s%*s%*s%s%-*s%s%s%s\n", iter->item.type,
 	  DEFAULT_PRINT_COL_SIZE_LEN, hsize,
@@ -194,8 +202,6 @@ cli_print_item (struct item_iterator *iter, struct backend *backend,
 	  DEFAULT_PRINT_COL_NAME_LEN, iter->item.name,
 	  info ? " [ " : "",
 	  info ? iter->item.object_info : "", info ? " ]" : "");
-
-  g_free (hsize);
 }
 
 static gint
@@ -481,9 +487,9 @@ cli_df (int argc, gchar *argv[], int *optind)
 {
   const gchar *device_path;
   const gchar *path;
-  gchar *size;
-  gchar *diff;
-  gchar *free;
+  gchar size[LABEL_MAX];
+  gchar diff[LABEL_MAX];
+  gchar free[LABEL_MAX];
   gint err;
   struct backend_storage_stats statfs;
 
@@ -526,15 +532,13 @@ cli_df (int argc, gchar *argv[], int *optind)
       gint v = backend.get_storage_stats (&backend, i, &statfs, path);
       if (v >= 0)
 	{
-	  size = get_human_size (statfs.bsize, FALSE);
-	  diff = get_human_size (statfs.bsize - statfs.bfree, FALSE);
-	  free = get_human_size (statfs.bfree, FALSE);
+	  get_human_size (statfs.bsize, FALSE, size, LABEL_MAX);
+	  get_human_size (statfs.bsize - statfs.bfree, FALSE, diff,
+			  LABEL_MAX);
+	  get_human_size (statfs.bfree, FALSE, free, LABEL_MAX);
 	  printf ("%-20.20s%16s%16s%16s%10.2f%%\n",
 		  statfs.name, size, diff, free,
 		  backend_get_storage_stats_percent (&statfs));
-	  g_free (size);
-	  g_free (diff);
-	  g_free (free);
 	}
 
       if (!v)
