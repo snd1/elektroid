@@ -417,39 +417,44 @@ common_system_get_upload_path (struct backend *backend,
 					  content);
 }
 
-void
+guint
 common_midi_msg_to_8bit_msg (guint8 *msg_midi, guint8 *msg_8bit,
 			     guint input_size)
 {
   guint8 *dst = msg_8bit;
   guint8 *src = msg_midi;
+  guint output_size = 0;
   for (guint i = 0; i < input_size;)
     {
       guint8 bits = *src;
       src++;
       i++;
-      for (guint j = 0; j < 7 && i < input_size; j++, i++, src++, dst++)
+      for (guint j = 0; j < 7 && i < input_size;
+	   j++, i++, src++, dst++, output_size++)
 	{
 	  *dst = *src | (bits & 0x1 ? 0x80 : 0);
 	  bits >>= 1;
 	}
     }
+  return output_size;
 }
 
-void
+guint
 common_8bit_msg_to_midi_msg (guint8 *msg_8bit, guint8 *msg_midi,
 			     guint input_size)
 {
   guint8 *dst = msg_midi;
   guint8 *src = msg_8bit;
   guint8 *bits = 0;
-  guint rem;
+  guint rem, output_size = 0;
   for (guint i = 0; i < input_size;)
     {
       bits = dst;
       *bits = 0;
       dst++;
-      for (guint j = 0; j < 7 && i < input_size; j++, i++, src++, dst++)
+      output_size++;
+      for (guint j = 0; j < 7 && i < input_size;
+	   j++, i++, src++, dst++, output_size++)
 	{
 	  *dst = *src & 0x7f;
 	  *bits |= *src & 0x80;
@@ -461,6 +466,7 @@ common_8bit_msg_to_midi_msg (guint8 *msg_8bit, guint8 *msg_midi,
     {
       *bits >>= 7 - rem;
     }
+  return output_size;
 }
 
 guint
