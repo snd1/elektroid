@@ -1,6 +1,6 @@
 PKG_CONFIG ?= pkg-config
 
-AM_CFLAGS = -Wall
+AM_CFLAGS = -Wall -O3
 AM_CPPFLAGS = -DTEST_DATA_DIR='"$(srcdir)/res"' -DDATADIR='"../res"'
 
 if MINGW
