@@ -175,7 +175,7 @@ summit_patch_next_dentry (struct item_iterator *iter)
   memcpy (iter->item.name, SUMMIT_GET_NAME_FROM_MSG (rx_msg, data->fs),
 	  SUMMIT_PATCH_NAME_LEN);
   iter->item.name[SUMMIT_PATCH_NAME_LEN] = 0;
-  g_strchomp(iter->item.name);
+  g_strchomp (iter->item.name);
   if (data->fs == FS_SUMMIT_SINGLE_PATCH)
     {
       const gchar *category = summit_get_category_name (rx_msg);
@@ -310,7 +310,7 @@ summit_patch_download (struct backend *backend, const gchar *path,
 
   memcpy (name, SUMMIT_GET_NAME_FROM_MSG (rx_msg, fs), SUMMIT_PATCH_NAME_LEN);
   name[SUMMIT_PATCH_NAME_LEN] = 0;
-  g_strchomp(name);
+  g_strchomp (name);
 
   idata_init (patch, rx_msg, strdup (name), NULL, NULL);
   goto end;
@@ -713,7 +713,7 @@ summit_wavetable_next_dentry (struct item_iterator *iter)
 
   memcpy (iter->item.name, &rx_msg->data[15], SUMMIT_WAVETABLE_NAME_LEN);
   iter->item.name[SUMMIT_WAVETABLE_NAME_LEN] = 0;
-  g_strchomp(iter->item.name);
+  g_strchomp (iter->item.name);
   free_msg (rx_msg);
 
   iter->item.id = data->next;
@@ -810,7 +810,7 @@ summit_wavetable_download (struct backend *backend, const gchar *path,
 
   memcpy (name, &output->data[15], SUMMIT_WAVETABLE_NAME_LEN);
   name[SUMMIT_WAVETABLE_NAME_LEN] = 0;
-  g_strchomp(name);
+  g_strchomp (name);
 
   idata_init (wavetable, output, strdup (name), NULL, NULL);
   goto end;
