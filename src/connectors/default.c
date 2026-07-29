@@ -30,37 +30,21 @@ enum default_fs
 };
 
 static gint
-default_next_dentry (struct item_iterator *iter)
-{
-  guint *data = iter->data;
-
-  if (*data >= DEFAULT_MAX_PROGRAMS)
-    {
-      return -ENOENT;
-    }
-
-  iter->item.id = *data;
-  item_set_name (&iter->item, "%d", *data);
-  iter->item.type = ITEM_TYPE_FILE;
-  iter->item.size = -1;
-  (*data)++;
-
-  return 0;
-}
-
-static gint
 default_read_dir (struct backend *backend, struct item_iterator *iter,
 		  const gchar *dir, const gchar **extensions)
 {
+  struct common_simple_read_dir_data *data;
+
   if (strcmp (dir, "/"))
     {
       return -ENOTDIR;
     }
 
-  guint *data = g_malloc (sizeof (guint));
-  *data = 0;
+  data = g_malloc (sizeof (struct common_simple_read_dir_data));
+  data->next = 0;
+  data->last = DEFAULT_MAX_PROGRAMS - 1;
 
-  item_iterator_init (iter, dir, data, default_next_dentry, g_free);
+  item_iterator_init (iter, dir, data, common_simple_next_dentry, g_free);
 
   return 0;
 }
@@ -68,7 +52,7 @@ default_read_dir (struct backend *backend, struct item_iterator *iter,
 const struct fs_operations FS_PROGRAM_DEFAULT_OPERATIONS = {
   .id = FS_PROGRAM_DEFAULT,
   .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
-    FS_OPTION_SHOW_SLOT_COLUMN,
+    FS_OPTION_SHOW_ID_COLUMN,
   .name = "program",
   .gui_name = "Programs",
   .gui_icon = FS_ICON_PRESET,
