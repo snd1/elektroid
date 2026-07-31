@@ -717,6 +717,7 @@ summit_wavetable_next_dentry (struct item_iterator *iter)
   free_msg (rx_msg);
 
   iter->item.id = data->next;
+  common_slot_set_slot_padded (&iter->item, 1);
   iter->item.type = ITEM_TYPE_FILE;
   iter->item.size = 2678;
   data->next++;
