@@ -1440,10 +1440,50 @@ static gboolean
 editor_waveform_scroll (GtkWidget *widget, GdkEventScroll *event,
 			gpointer data)
 {
-  if (event->direction == GDK_SCROLL_SMOOTH)
+  gdouble dx, dy;
+  static gdouble acc_y;
+  gboolean detected = FALSE;
+
+  if (gdk_event_get_scroll_deltas ((GdkEvent *) event, &dx, &dy))
     {
-      gdouble dx, dy;
-      gdk_event_get_scroll_deltas ((GdkEvent *) event, &dx, &dy);
+      debug_print (2, "Smooth scroll: %.2f", dy);
+      acc_y += dy;
+
+      if (acc_y >= 1)
+	{
+	  dy = 1;
+	  acc_y -= 1;
+	  detected = TRUE;
+	}
+      else if (acc_y < -1.0)
+	{
+	  dy = -1;
+	  acc_y += 1;
+	  detected = TRUE;
+	}
+    }
+  else
+    {
+      GdkScrollDirection direction;
+      if (gdk_event_get_scroll_direction ((GdkEvent *) event, &direction))
+	{
+	  if (direction == GDK_SCROLL_UP)
+	    {
+	      dy = -1;
+	    }
+	  else if (direction == GDK_SCROLL_DOWN)
+	    {
+	      dy = 1;
+	    }
+	  debug_print (2, "Discrete scroll: %.2f", dy);
+	}
+      detected = TRUE;
+    }
+
+  if (detected)
+    {
+      debug_print (2, "Scrolling with %.2f...", dy);
+
       if (editor_zoom (event, dy))
 	{
 	  editor_clear_waveform_data ();
@@ -1451,6 +1491,7 @@ editor_waveform_scroll (GtkWidget *widget, GdkEventScroll *event,
 	  gtk_widget_queue_draw (waveform);
 	}
     }
+
   return FALSE;
 }
 
