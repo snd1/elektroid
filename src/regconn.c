@@ -40,12 +40,26 @@ void
 regconn_register ()
 {
   system_connector = &CONNECTOR_SYSTEM;
-  gslist_fill (&connectors, &CONNECTOR_ELEKTRON, &CONNECTOR_MICROBRUTE,
-	       &CONNECTOR_MICROFREAK, &CONNECTOR_PHATTY, &CONNECTOR_SUMMIT,
-	       &CONNECTOR_CZ, &CONNECTOR_PADKONTROL,
-	       &CONNECTOR_VOLCA_SAMPLE_2, &CONNECTOR_LOGUE, &CONNECTOR_SDS,
-	       &CONNECTOR_EFACTOR, &CONNECTOR_DEFAULT,
-	       &CONNECTOR_VOLCA_SAMPLE, &CONNECTOR_MONOMACHINE, NULL);
+  gslist_fill (&connectors,
+	       // Fast MIDI connectors go first.
+	       // Then, slow MIDI connectors. Either because they are DIN MIDI or because any other reason.
+	       &CONNECTOR_CZ,
+	       &CONNECTOR_ELEKTRON,
+	       &CONNECTOR_LOGUE,
+	       &CONNECTOR_MICROBRUTE,
+	       &CONNECTOR_MICROFREAK,
+	       &CONNECTOR_MONOMACHINE,
+	       &CONNECTOR_PADKONTROL,
+	       &CONNECTOR_PHATTY,
+	       &CONNECTOR_SUMMIT, &CONNECTOR_VOLCA_SAMPLE_2,
+	       // sds is only tested on an E-mu ESI-2000, which is slow.
+	       &CONNECTOR_SDS,
+	       // But efactor is even slower and it's USB.
+	       &CONNECTOR_EFACTOR,
+	       // default connector needs need to the last of the MIDI connectors as the handshake always succeeds.
+	       &CONNECTOR_DEFAULT,
+	       // Non MIDI connectors can go anywhere but let's add it to the end.
+	       &CONNECTOR_VOLCA_SAMPLE, NULL);
 }
 
 void

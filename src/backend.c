@@ -839,8 +839,8 @@ backend_init_connector (struct backend *backend,
 {
   gint err;
   GSList *list = NULL, *iterator;
-  GSList *c;
 
+  // First, check the system connector.
   if (device->type == BE_TYPE_SYSTEM)
     {
       backend->conn_name = system_connector->name;
@@ -848,12 +848,14 @@ backend_init_connector (struct backend *backend,
       return system_connector->handshake (backend);
     }
 
+  // Then, check the NO MIDI connectors.
   if (device->type == BE_TYPE_NO_MIDI)
     {
       for (iterator = connectors; iterator; iterator = iterator->next)
 	{
 	  const struct connector *c = iterator->data;
-	  if (!strcmp (c->name, device->id))
+	  if ((c->options & CONNECTOR_OPTION_NO_MIDI) &&
+	      !strcmp (c->name, device->id))
 	    {
 	      if (conn_name && strcmp (c->name, conn_name))
 		{
@@ -877,31 +879,36 @@ backend_init_connector (struct backend *backend,
       return err;
     }
 
-  c = connectors;
-  while (c)
+  // For the MIDI connectors, we sort them by regex as containing a regex allows for a quicker name check.
+  // If the regex check fails, it needs to be added in the end.
+  for (iterator = connectors; iterator; iterator = iterator->next)
     {
-      struct connector *connector = c->data;
-      if (connector->regex)
+      struct connector *c = iterator->data;
+
+      if (c->options & CONNECTOR_OPTION_NO_MIDI)
 	{
-	  GRegex *regex = g_regex_new (connector->regex, G_REGEX_CASELESS,
+	  continue;
+	}
+
+      if (c->regex)
+	{
+	  GRegex *regex = g_regex_new (c->regex, G_REGEX_CASELESS,
 				       0, NULL);
 	  if (g_regex_match (regex, device->name, 0, NULL))
 	    {
-	      debug_print (1, "Connector %s matches the device",
-			   connector->name);
-	      list = g_slist_prepend (list, (void *) connector);
+	      debug_print (1, "Connector %s matches the device", c->name);
+	      list = g_slist_prepend (list, (void *) c);
 	    }
 	  else
 	    {
-	      list = g_slist_append (list, (void *) connector);
+	      list = g_slist_append (list, (void *) c);
 	    }
 	  g_regex_unref (regex);
 	}
       else
 	{
-	  list = g_slist_append (list, (void *) connector);
+	  list = g_slist_append (list, (void *) c);
 	}
-      c = c->next;
     }
 
   if (!CONTROLLABLE_IS_NULL_OR_ACTIVE (controllable))
@@ -933,10 +940,7 @@ backend_init_connector (struct backend *backend,
 	{
 	  if (!strcmp (conn_name, c->name))
 	    {
-	      if (!(c->options & CONNECTOR_OPTION_NO_MIDI))
-		{
-		  backend_midi_handshake (backend);
-		}
+	      backend_midi_handshake (backend);
 	      err = c->handshake (backend);
 	      if (!err)
 		{
