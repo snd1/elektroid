@@ -4580,6 +4580,6 @@ elektron_upload_raw_pst_pkg (struct backend *backend, const gchar *path,
 const struct connector CONNECTOR_ELEKTRON = {
   .handshake = elektron_handshake,
   .name = "elektron",
-  .options = CONNECTOR_OPTION_CUSTOM_HANDSHAKE,
+  .options = 0,
   .regex = ".*Elektron.*"
 };

@@ -212,10 +212,7 @@ struct connector
 
 enum connector_options
 {
-  CONNECTOR_OPTION_CUSTOM_HANDSHAKE = 1,
-  //This could be useful for non MIDI devices that use some other type of physical link,
-  //such as old samplers with serial ports or the KORG Volca Sample (audio).
-  CONNECTOR_OPTION_NO_MIDI = (1 << 1)
+  CONNECTOR_OPTION_NO_MIDI = 1
 };
 
 void item_iterator_init (struct item_iterator *iter, const gchar * dir,

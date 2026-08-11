@@ -904,6 +904,6 @@ system_handshake (struct backend *backend)
 const struct connector CONNECTOR_SYSTEM = {
   .handshake = system_handshake,
   .name = "system",
-  .options = CONNECTOR_OPTION_CUSTOM_HANDSHAKE,
+  .options = 0,
   .regex = NULL
 };

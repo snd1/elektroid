@@ -1374,6 +1374,6 @@ end:
 const struct connector CONNECTOR_SDS = {
   .name = "sds",
   .handshake = sds_handshake,
-  .options = CONNECTOR_OPTION_CUSTOM_HANDSHAKE,
+  .options = 0,
   .regex = NULL
 };
