@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "****************************************************"
+echo "* This test requires pattern tempo to be activated *"
+echo "****************************************************"
+
 # Same as the track filesystem
 
 err=0
@@ -39,6 +43,7 @@ $ecli elektron:sample:rm $TEST_DEVICE:$incoming_file
 
 # This part requires pattern tempo to be activated.
 
+echo "Sending pattern..."
 $ecli send $srcdir/res/connectors/elektron_pattern_86_bpm.syx $TEST_DEVICE
 
 echo "Testing upload and download..."
