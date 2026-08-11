@@ -548,7 +548,7 @@ static const struct fs_operations FS_VOLCA_SAMPLE_2_SAMPLE_LOOP_OPERATIONS = {
     FS_OPTION_SLOT_STORAGE | FS_OPTION_SHOW_SLOT_COLUMN |
     FS_OPTION_SHOW_SIZE_COLUMN | FS_OPTION_ALLOW_SEARCH,
   .name = "sample-loop",
-  .gui_name = "Sample (loop)",
+  .gui_name = "Samples (loop)",
   .gui_icon = FS_ICON_WAVE_LOOP,
   .file_icon = FS_ICON_WAVE,
   .readdir = volca_sample_2_sample_read_dir,
