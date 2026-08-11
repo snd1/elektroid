@@ -483,6 +483,6 @@ phatty_handshake (struct backend *backend)
 const struct connector CONNECTOR_PHATTY = {
   .name = "phatty",
   .handshake = phatty_handshake,
-  .options = 0,
+  .type = CONNECTOR_TYPE_MIDI,
   .regex = ".*Phatty.*"
 };

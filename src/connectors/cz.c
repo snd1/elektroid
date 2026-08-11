@@ -348,6 +348,5 @@ end:
 const struct connector CONNECTOR_CZ = {
   .name = "cz",
   .handshake = cz_handshake,
-  .options = 0,
-  .regex = NULL
+  .type = CONNECTOR_TYPE_MIDI
 };

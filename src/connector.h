@@ -199,20 +199,22 @@ enum fs_options
 
 typedef gint (*connector_handshake) (struct backend * backend);
 
+// This mimics enum backend_type.
+enum connector_type
+{
+  CONNECTOR_TYPE_SYSTEM = 1,
+  CONNECTOR_TYPE_MIDI,
+  CONNECTOR_TYPE_NO_MIDI
+};
+
 struct connector
 {
   const gchar *name;		// This needs to be unique among all the connectors. Using spaces is discouraged and hyphen is the suggested replacement.
   connector_handshake handshake;
-  //Used to indicate if the handshake requires a MIDI identity request
-  guint32 options;
+  enum connector_type type;
   const gchar *device_name;	//Only used for non MIDI devices when a virtual device is created.
   //If the backend device name matches this regex, the handshake will be run before than the connectors that didn't match.
   const gchar *regex;
-};
-
-enum connector_options
-{
-  CONNECTOR_OPTION_NO_MIDI = 1
 };
 
 void item_iterator_init (struct item_iterator *iter, const gchar * dir,

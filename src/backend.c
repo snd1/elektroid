@@ -27,7 +27,6 @@
 // This can be allocated statically as the only function that uses it is synchronized.
 static guint8 tmp_buffer[BE_MAX_BUFF_SIZE];
 
-struct connector *system_connector = NULL;
 GSList *connectors = NULL;
 
 // When sending a batch of SysEx messages we want the trasfer status to be controlled outside this function.
@@ -808,7 +807,7 @@ backend_get_devices ()
   while (c)
     {
       struct connector *connector = c->data;
-      if (connector->options & CONNECTOR_OPTION_NO_MIDI)
+      if (connector->type == CONNECTOR_TYPE_NO_MIDI)
 	{
 	  backend_device = g_malloc (sizeof (struct backend_device));
 	  backend_device->type = BE_TYPE_NO_MIDI;
@@ -840,39 +839,40 @@ backend_init_connector (struct backend *backend,
   gint err;
   GSList *list = NULL, *iterator;
 
-  // First, check the system connector.
-  if (device->type == BE_TYPE_SYSTEM)
-    {
-      backend->conn_name = system_connector->name;
-      backend->type = BE_TYPE_SYSTEM;
-      return system_connector->handshake (backend);
-    }
-
-  // Then, check the NO MIDI connectors.
-  if (device->type == BE_TYPE_NO_MIDI)
+  // First, check the non MIDI connector.
+  if (device->type == BE_TYPE_SYSTEM || device->type == BE_TYPE_NO_MIDI)
     {
       for (iterator = connectors; iterator; iterator = iterator->next)
 	{
 	  const struct connector *c = iterator->data;
-	  if ((c->options & CONNECTOR_OPTION_NO_MIDI) &&
-	      !strcmp (c->name, device->id))
-	    {
-	      if (conn_name && strcmp (c->name, conn_name))
-		{
-		  error_print ("Unexpected connector");
-		  return -ENODEV;
-		}
 
-	      if (!c->handshake (backend))
+	  if (device->type == BE_TYPE_SYSTEM &&
+	      c->type == CONNECTOR_TYPE_SYSTEM)
+	    {
+	      backend->conn_name = c->name;
+	      backend->type = BE_TYPE_SYSTEM;
+	      return c->handshake (backend);
+	    }
+	  else if (device->type == BE_TYPE_NO_MIDI &&
+		   c->type == CONNECTOR_TYPE_NO_MIDI)
+	    {
+	      if (!strcmp (c->name, device->id))
 		{
+		  if (conn_name && strcmp (c->name, conn_name))
+		    {
+		      error_print ("Unexpected connector");
+		      return -ENODEV;
+		    }
+
 		  backend->conn_name = c->name;
 		  backend->type = BE_TYPE_NO_MIDI;
-		  return 0;
+		  return c->handshake (backend);
 		}
 	    }
 	}
     }
 
+  // If the connector was not found. Let's try with the MIDI ones.
   err = backend_init_midi (backend, device->id);
   if (err)
     {
@@ -885,7 +885,7 @@ backend_init_connector (struct backend *backend,
     {
       struct connector *c = iterator->data;
 
-      if (c->options & CONNECTOR_OPTION_NO_MIDI)
+      if (c->type != CONNECTOR_TYPE_MIDI)
 	{
 	  continue;
 	}
@@ -933,8 +933,7 @@ backend_init_connector (struct backend *backend,
 	  goto end;
 	}
 
-      debug_print (1, "Testing %s connector (options 0x%08x)...",
-		   c->name, c->options);
+      debug_print (1, "Testing %s connector (type %d)...", c->name, c->type);
 
       if (conn_name)
 	{

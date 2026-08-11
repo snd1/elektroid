@@ -39,7 +39,6 @@
 void
 regconn_register ()
 {
-  system_connector = &CONNECTOR_SYSTEM;
   gslist_fill (&connectors,
 	       // Fast MIDI connectors go first.
 	       // Then, slow MIDI connectors. Either because they are DIN MIDI or because any other reason.
@@ -59,7 +58,7 @@ regconn_register ()
 	       // default connector needs need to the last of the MIDI connectors as the handshake always succeeds.
 	       &CONNECTOR_DEFAULT,
 	       // Non MIDI connectors can go anywhere but let's add it to the end.
-	       &CONNECTOR_VOLCA_SAMPLE, NULL);
+	       &CONNECTOR_SYSTEM, &CONNECTOR_VOLCA_SAMPLE, NULL);
 }
 
 void

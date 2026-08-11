@@ -446,6 +446,5 @@ end:
 const struct connector CONNECTOR_MONOMACHINE = {
   .name = "monomachine",
   .handshake = monomachine_handshake,
-  .options = 0,
-  .regex = NULL
+  .type = CONNECTOR_TYPE_MIDI
 };

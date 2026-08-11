@@ -73,6 +73,5 @@ default_handshake (struct backend *backend)
 const struct connector CONNECTOR_DEFAULT = {
   .name = "default",
   .handshake = default_handshake,
-  .options = 0,
-  .regex = NULL
+  .type = CONNECTOR_TYPE_MIDI
 };

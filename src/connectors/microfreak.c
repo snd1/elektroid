@@ -2065,6 +2065,6 @@ microfreak_handshake (struct backend *backend)
 const struct connector CONNECTOR_MICROFREAK = {
   .name = MICROFREAK_NAME,
   .handshake = microfreak_handshake,
-  .options = 0,
+  .type = CONNECTOR_TYPE_MIDI,
   .regex = ".*MicroFreak.*"
 };

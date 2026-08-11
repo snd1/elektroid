@@ -1693,6 +1693,6 @@ logue_handshake (struct backend *backend)
 const struct connector CONNECTOR_LOGUE = {
   .name = "logue",
   .handshake = logue_handshake,
-  .options = 0,
+  .type = CONNECTOR_TYPE_MIDI,
   .regex = ".*(prologue|minilogue xd|NTS-1).*KBD/KNOB"
 };

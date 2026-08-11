@@ -619,6 +619,6 @@ microbrute_set_parameter (struct backend *backend,
 const struct connector CONNECTOR_MICROBRUTE = {
   .name = MICROBRUTE_NAME,
   .handshake = microbrute_handshake,
-  .options = 0,
+  .type = CONNECTOR_TYPE_MIDI,
   .regex = ".*MicroBrute.*"
 };

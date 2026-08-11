@@ -55,7 +55,6 @@
 #define PREF_KEY_STOP_DEVICE_WHEN_CONNECTING "stopDeviceWhenConnecting"
 
 extern GSList *connectors;
-extern struct connector *system_connector;
 
 struct backend_storage_stats
 {

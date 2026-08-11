@@ -961,6 +961,6 @@ volca_sample_2_handshake (struct backend *backend)
 const struct connector CONNECTOR_VOLCA_SAMPLE_2 = {
   .name = "volca-sample-2",
   .handshake = volca_sample_2_handshake,
-  .options = 0,
+  .type = CONNECTOR_TYPE_MIDI,
   .regex = ".*volca sample.*"
 };
