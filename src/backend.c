@@ -911,6 +911,14 @@ backend_init_connector (struct backend *backend,
 	}
     }
 
+  debug_print (2, "Handshaking priority for the device \"%s\":",
+	       device->name);
+  for (iterator = list; iterator; iterator = iterator->next)
+    {
+      struct connector *c = iterator->data;
+      debug_print (2, "%s", c->name);
+    }
+
   if (!CONTROLLABLE_IS_NULL_OR_ACTIVE (controllable))
     {
       err = -ECANCELED;

@@ -39,9 +39,14 @@
 void
 regconn_register ()
 {
+  // The order in this list indicates the priority of the connectors handshake.
+  // Non MIDI devices (SYSTEM and NO_MIDI) are always checked first, no matter the position, as they do not need a slow MIDI handshake.
+  // In order to speed up the search in this list, the regex in the connector is used against the device name.
+  // Matching connectors will try handshaking first. Unmatching connectors or connectors without a regex will handshake later.
+  // USB devices should use a regex in the connector for the device name. MIDI DIN devices should not as they do not have a name.
+  // USB devices including a MIDI DIN port will be checked first when using the MIDI DIN port. No solution for this case.
   gslist_fill (&connectors,
-	       // Fast MIDI connectors go first.
-	       // Then, slow MIDI connectors. Either because they are DIN MIDI or because any other reason.
+	       // Fast and simple MIDI connectors go first.
 	       &CONNECTOR_CZ,
 	       &CONNECTOR_ELEKTRON,
 	       &CONNECTOR_LOGUE,
@@ -53,7 +58,7 @@ regconn_register ()
 	       &CONNECTOR_SUMMIT, &CONNECTOR_VOLCA_SAMPLE_2,
 	       // sds is only tested on an E-mu ESI-2000, which is slow.
 	       &CONNECTOR_SDS,
-	       // But efactor is even slower and it's USB.
+	       // But efactor is even slower even though it is USB.
 	       &CONNECTOR_EFACTOR,
 	       // default connector needs need to the last of the MIDI connectors as the handshake always succeeds.
 	       &CONNECTOR_DEFAULT,
