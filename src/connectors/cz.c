@@ -149,7 +149,7 @@ cz_next_dentry (struct item_iterator *iter)
 }
 
 static gint
-get_mem_type (const gchar *name)
+cz_get_mem_type (const gchar *name)
 {
   const char **mem_type = CZ_MEM_TYPES;
   for (int i = 0; *mem_type; i++, mem_type++)
@@ -178,7 +178,7 @@ cz_read_dir (struct backend *backend, struct item_iterator *iter,
       item_iterator_init (iter, dir, data, cz_next_dentry_root, g_free);
       return 0;
     }
-  else if ((mem_type = get_mem_type (&dir[1])) >= 0)
+  else if ((mem_type = cz_get_mem_type (&dir[1])) >= 0)
     {
       struct cz_type_iterator_data *data =
 	g_malloc (sizeof (struct cz_type_iterator_data));
@@ -213,7 +213,7 @@ cz_get_id_from_path (const gchar *path, guint8 *id)
   if (*id != CZ_PANEL_ID)
     {
       dir = g_path_get_dirname (path);
-      type = get_mem_type (&dir[1]);
+      type = cz_get_mem_type (&dir[1]);
       g_free (dir);
 
       if (type < 0)
