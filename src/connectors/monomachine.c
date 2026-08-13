@@ -381,7 +381,8 @@ static gint
 monomachine_sample_load (struct backend *backend, const gchar *path,
 			 struct idata *sample, struct task_control *control)
 {
-  return common_sample_load (path, sample, control, 1, 0, SF_FORMAT_PCM_16,
+  return common_sample_load (path, sample, control, 1,
+			     MONOMACHINE_SAMPLE_RATE, SF_FORMAT_PCM_16,
 			     FALSE);
 }
 
