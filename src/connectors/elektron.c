@@ -2915,16 +2915,15 @@ elektron_download_pkg (struct backend *backend, const gchar *path,
       return -1;
     }
 
-  if (elektron_pkg_begin
-      (&pkg, pkg_name, backend->version, &data->dev_desc, type))
+  if (elektron_pkg_begin (&pkg, pkg_name, backend->version, &data->dev_desc,
+			  type))
     {
       g_free (pkg_name);
       return -1;
     }
 
-  ret =
-    elektron_pkg_receive_pkg_resources (&pkg, path, control, backend,
-					download, type);
+  ret = elektron_pkg_receive_pkg_resources (&pkg, path, control,
+					    backend, download, type);
   ret = ret || elektron_pkg_end (&pkg, output);
 
   elektron_pkg_destroy (&pkg);
