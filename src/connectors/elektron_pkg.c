@@ -528,7 +528,7 @@ elektron_pkg_receive_pkg_resources (struct elektron_pkg *pkg,
        data->dev_desc.id != ELEKTRON_ANALOG_RYTM_MKII_ID &&
        data->dev_desc.id != ELEKTRON_MODEL_SAMPLES_ID &&
        data->dev_desc.id != ELEKTRON_DIGITAKT_II_ID) ||
-      type == PKG_FILE_TYPE_DATA_PRESET)
+      type == PKG_FILE_TYPE_DATA_PRESET || type == PKG_FILE_TYPE_RAW_PRESET)
     {
       goto get_payload;
     }
