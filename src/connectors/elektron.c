@@ -1559,7 +1559,8 @@ elektron_download_smplrw (struct backend *backend, const gchar *path,
   res = elektron_get_smplrw_info_from_msg (rx_msg, &id, &frames);
   if (res)
     {
-      error_print ("%s (%s)", backend_strerror (backend, res),
+      error_print ("Error while openning '%s': %s (%s)", path,
+		   backend_strerror (backend, res),
 		   elektron_get_msg_string (rx_msg));
       free_msg (rx_msg);
       return res;
