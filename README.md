@@ -520,4 +520,4 @@ Running `make check` without setting any of these variables will run some system
 
 ### Documentation
 
-`README.md` file is generated from the `docs` dir, which contains the web page of the project in Jekyll format, so modify the required page and update the `README.md` by running `make clean; make` from the `docs` directory.
+`README.md` and other resource file are generated from the `docs` dir, which contains the web page of the project in Jekyll format. In order to regenerate the web page and these files, run `make clean; make` from the `docs` directory.

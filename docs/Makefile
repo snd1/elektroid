@@ -1,6 +1,9 @@
-# The project README.md is generated from the documentation pages by executing `make` on this directory.
+# The project README.md and other resource files are generated from the documentation pages by executing `make` on this directory.
 
 README=../README.md
+CONTRIBUTING=../CONTRIBUTING.md
+
+all: $(README) $(CONTRIBUTING) license.md
 
 $(README): index.md license.md installation.md packaging.md cli.md api.md contributing.md
 	echo '# Elektroid' > $(README)
@@ -14,6 +17,11 @@ $(README): index.md license.md installation.md packaging.md cli.md api.md contri
 	tail -n +7 cli.md >> $(README)
 	tail -n +7 api.md | sed "s^https://github.com/dagargo/elektroid/tree/master/^^g" >> $(README)
 	tail -n +7 contributing.md >> $(README)
+
+$(CONTRIBUTING): contributing.md
+	echo '[//]: # (Do not modify this file manually.)' > $(CONTRIBUTING)
+	echo '[//]: # (This file is generated from the docs directory by executing `make clean; make`.)' >> $(CONTRIBUTING)
+	tail -n +7 contributing.md | sed "s/^##/#/g" >> $(CONTRIBUTING)
 
 license.md: license.md.in
 	cat license.md.in > license.md

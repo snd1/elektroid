@@ -1,17 +1,13 @@
----
-layout: base
-title: Contributing
-permalink: /contributing/
-order: 6
----
+[//]: # (Do not modify this file manually.)
+[//]: # (This file is generated from the docs directory by executing `make clean; make`.)
 
-## Contributing
+# Contributing
 
-### Code formatting
+## Code formatting
 
 Elektroid uses the default indenting style provided by `indent`, which is the GNU style. It should be applied when submitting contributions by running `make format`.
 
-### Tests
+## Tests
 
 Elektroid includes automated integration tests for the supported devices and filesystems that ideally should be implemented when new devices are added.
 
@@ -23,6 +19,6 @@ $ TEST_DEVICE=0 TEST_CONNECTOR_FILESYSTEM=efactor_preset make check
 
 Running `make check` without setting any of these variables will run some system integration tests together with a few unit tests.
 
-### Documentation
+## Documentation
 
 `README.md` and other resource file are generated from the `docs` dir, which contains the web page of the project in Jekyll format. In order to regenerate the web page and these files, run `make clean; make` from the `docs` directory.
