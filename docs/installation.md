@@ -44,7 +44,7 @@ sudo dnf install autoconf libtool alsa-lib-devel zlib-devel libzip-devel gtk3-de
 For Arch Linux, run this to install the build dependencies.
 
 ```
-sudo pacman -S base-devel autoconf libtool alsa-lib zlib libzip gtk3 libsndfile gettext libsamplerate json-glib rubberband`
+sudo pacman -S base-devel autoconf libtool alsa-lib zlib libzip gtk3 libsndfile gettext libsamplerate json-glib rubberband
 ```
 
 For OSX (Homebrew), run this to install the build dependencies.
