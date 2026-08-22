@@ -21,13 +21,25 @@
       <li>Elektron Digitone I and II and Digitone Keys</li>
       <li>Elektron Model:Cycles</li>
       <li>Elektron Model:Samples</li>
+      <li>Elektron Monomachine MKII</li>
       <li>Elektron Syntakt</li>
       <li>Eventide ModFactor, PitchFactor, TimeFactor, Space and H9</li>
       <li>KORG padKONTROL</li>
+      <li>KORG prologue, minilogue xd and NTS-1 (units only)</li>
       <li>KORG Volca Sample and Volca Sample 2</li>
       <li>Moog Little Phatty and Slim Phatty</li>
       <li>Novation Summit and Peak</li>
       <li>Samplers implementing MIDI SDS</li>
+    </ul>
+    <p>Other interesting features are:</p>
+    <ul>
+      <li>Autosampler with SFZ file generation</li>
+      <li>Sample playback, recording and basic edition</li>
+      <li>Sample loop points edition with zero crossing detection</li>
+      <li>Sample tagging</li>
+      <li>Sample zoom</li>
+      <li>Search within devices</li>
+      <li>SysEx transmission and reception</li>
     </ul>
   </description>
   <launchable type="desktop-id">io.github.dagargo.Elektroid.desktop</launchable>
@@ -35,6 +47,7 @@
     <binary>elektroid</binary>
   </provides>
   <releases>
+    <release version="3.4" date="2026-08-22"/>
     <release version="3.3.2" date="2026-02-26"/>
     <release version="3.3.1" date="2026-02-24"/>
     <release version="3.3" date="2026-02-22"/>
