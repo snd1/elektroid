@@ -32,6 +32,8 @@
 #define CZ_FIRST_CARTRIDGE_ID 0x40
 #define CZ_PANEL "panel"
 
+#define CZ_TIMEOUT_MS 1000
+
 static const char *CZ_MEM_TYPES[] =
   { "preset", "internal", "cartridge", NULL };
 
@@ -98,7 +100,7 @@ cz_next_dentry_root (struct item_iterator *iter)
 	{
 	  tx_msg = cz_get_program_dump_msg (CZ_FIRST_CARTRIDGE_ID);
 	  rx_msg = backend_tx_and_rx_sysex (data->backend, tx_msg,
-					    BE_SYSEX_TIMEOUT_GUESS_MS);
+					    CZ_TIMEOUT_MS);
 	  data->next++;
 	  if (rx_msg)
 	    {
@@ -324,8 +326,7 @@ cz_handshake (struct backend *backend)
   GByteArray *tx_msg, *rx_msg;
 
   tx_msg = cz_get_program_dump_msg (CZ_PANEL_ID);
-  rx_msg = backend_tx_and_rx_sysex (backend, tx_msg,
-				    BE_SYSEX_TIMEOUT_GUESS_MS);
+  rx_msg = backend_tx_and_rx_sysex (backend, tx_msg, CZ_TIMEOUT_MS);
   if (!rx_msg)
     {
       return -ENODEV;

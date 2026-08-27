@@ -79,6 +79,8 @@ static const gchar *FS_DATA_ANY_EXTS[] = { "data", NULL };
 #define ELEKTRON_MC_SOUND_EXTENSION "mc-snd"
 #define ELEKTRON_MC_SOUND_EXTENSION_WITH_DOT ("." ELEKTRON_MC_SOUND_EXTENSION)
 
+#define ELEKTRON_HANDSHAKE_TIMEOUT_MS 1000
+
 struct elektron_sample_header
 {
   guint8 type;
@@ -4393,7 +4395,7 @@ elektron_ping (struct backend *backend)
 
   tx_msg = elektron_new_msg (PING_REQUEST, sizeof (PING_REQUEST));
   rx_msg = elektron_tx_and_rx_timeout (backend, tx_msg,
-				       BE_SYSEX_TIMEOUT_GUESS_MS, NULL);
+				       ELEKTRON_HANDSHAKE_TIMEOUT_MS, NULL);
   if (!rx_msg)
     {
       backend->data = NULL;

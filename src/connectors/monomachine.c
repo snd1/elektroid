@@ -64,6 +64,8 @@
 //Nominal rate; the device plays waveforms as wavetable cycles.
 #define MONOMACHINE_SAMPLE_RATE 44100
 
+#define MONOMACHINE_HANDSHAKE_TIMEOUT_MS 1000
+
 static const guint8 MONOMACHINE_GLOBAL_SETTINGS_REQUEST[] =
   { 0xf0, 0, 0x20, 0x3c, 3, 0, 0x51, 0, 0xf7 };
 
@@ -423,7 +425,7 @@ monomachine_handshake (struct backend *backend)
   g_byte_array_append (tx_msg, MONOMACHINE_GLOBAL_SETTINGS_REQUEST,
 		       sizeof (MONOMACHINE_GLOBAL_SETTINGS_REQUEST));
   rx_msg = backend_tx_and_rx_sysex (backend, tx_msg,
-				    BE_SYSEX_TIMEOUT_GUESS_MS);
+				    MONOMACHINE_HANDSHAKE_TIMEOUT_MS);
   if (!rx_msg)
     {
       return -ENODEV;
