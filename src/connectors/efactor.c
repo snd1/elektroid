@@ -127,7 +127,7 @@ efactor_set_slot (struct item *item, struct efactor_data *data)
   if (data->type == EFACTOR_FACTOR)
     {
       //This is a bit of a hack since not only are we showing the ID but also the bank-preset pair.
-      snprintf (item->slot, ITEM_SLOT_MAX, "%02d [%d:%d]", item->id,
+      snprintf (item->slot, ITEM_SLOT_MAX, "[%d:%d]",
 		(item->id / 2) + 1, (item->id % 2) + 1);
     }
   else
@@ -397,7 +397,7 @@ end:
 static const struct fs_operations FS_EFACTOR_OPERATIONS = {
   .id = FS_EFACTOR_PRESET,
   .options = FS_OPTION_SINGLE_OP | FS_OPTION_SLOT_STORAGE |
-    FS_OPTION_SHOW_SLOT_COLUMN,
+    FS_OPTION_SHOW_ID_COLUMN | FS_OPTION_SHOW_SLOT_COLUMN,
   .name = "preset",
   .gui_name = "Presets",
   .gui_icon = FS_ICON_PRESET,
