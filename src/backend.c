@@ -24,6 +24,8 @@
 #include "preferences.h"
 #include "utils.h"
 
+#define BE_HANDSHAKE_TIMEOUT_MS 1500	//When the request is not implemented, 5 s is too much. efactor needs more than 1 s.
+
 // This can be allocated statically as the only function that uses it is synchronized.
 static guint8 tmp_buffer[BE_MAX_BUFF_SIZE];
 
@@ -181,8 +183,7 @@ backend_midi_handshake (struct backend *backend)
   tx_msg = g_byte_array_sized_new (sizeof (BE_MIDI_IDENTITY_REQUEST));
   g_byte_array_append (tx_msg, (guchar *) BE_MIDI_IDENTITY_REQUEST,
 		       sizeof (BE_MIDI_IDENTITY_REQUEST));
-  rx_msg = backend_tx_and_rx_sysex (backend, tx_msg,
-				    BE_SYSEX_TIMEOUT_GUESS_MS);
+  rx_msg = backend_tx_and_rx_sysex (backend, tx_msg, BE_HANDSHAKE_TIMEOUT_MS);
   if (!rx_msg)
     {
       debug_print (1, "No MIDI identity reply");
